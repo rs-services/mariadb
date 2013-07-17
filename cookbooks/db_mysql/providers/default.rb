@@ -340,7 +340,7 @@ action :install_client do
       },
       "ubuntu" => {
         "10.04" => [],
-        "default" => ["mariadb-client"]
+        "default" => ["mariadb-client", "libmariadbclient18", "libmariadbclient-dev", "libmysqlclient18"]
       },
       "default" => []
     )

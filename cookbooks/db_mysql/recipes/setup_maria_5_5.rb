@@ -54,7 +54,7 @@ log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
 
 
     apt_repository "MariaDB" do
-      uri "http://mirror.yongbok.net/mariadb/repo/5.5/ubuntu"
+      uri "http://ftp.osuosl.org/pub/mariadb/repo/5.5/debian"
       distribution node['lsb']['codename']
       components ["main"]
       keyserver "keyserver.ubuntu.com"
