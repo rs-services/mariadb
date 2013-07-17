@@ -52,7 +52,7 @@ if node[:db][:flavor] == "mariadb"
 
 
        apt_repository "MariaDB" do
-          uri "http://ftp.osuosl.org/pub/mariadb/repo/5.5/debian"
+          uri "http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu"
           distribution node['lsb']['codename']
           components ["main"]
           keyserver "keyserver.ubuntu.com"
