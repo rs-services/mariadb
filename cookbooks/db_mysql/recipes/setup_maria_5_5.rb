@@ -15,20 +15,19 @@ node[:db][:provider] = "db_mysql"
 
 log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
 
-  package "yum-plugin-fastestmirror" do
+
+  if node[:platform] =~ /redhat|centos/ do
+   package "yum-plugin-fastestmirror" do
      action :install
-     only_if { node[:platform] =~ /redhat|centos/ }
-  end
+   end
 
-
-  if node[:db][:flavor] == "mariadb"
+   if node[:db][:flavor] == "mariadb"
     log "Installing MariaDB repo for #{node[:platform]}..."
     #MariaDB repo
 
     yum_key "RPM-GPG-KEY-MariaDB" do
       url "https://yum.mariadb.org/RPM-GPG-KEY-MariaDB"
       action :add
-      only_if { node[:platform] =~ /redhat|centos/ }
     end
 
     yum_repository "MariaDB" do
@@ -37,13 +36,37 @@ log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
       url "http://yum.mariadb.org/5.5/centos#{node[:platform_version].to_i}-amd64"
       key "RPM-GPG-KEY-MariaDB"
       action :add
-      only_if { node[:platform] =~ /redhat|centos/ }
     end
 
-  else
+   else #Flavor
      log "No extra repo needed for #{node[:db][:flavor]}."
-  end
+   end
+  end #Centos
 
+  if node[:platform] =~ /ubuntu|debian/ do
+
+    if node[:db][:flavor] == "mariadb"
+    log "Installing MariaDB repo for #{node[:platform]}..."
+    #MariaDB repo
+    package "python-software-properties" do
+      action :install
+    end
+
+
+    apt_repository "MariaDB" do
+      uri "http://mirror.yongbok.net/mariadb/repo/5.5/ubuntu"
+      distribution node['lsb']['codename']
+      components ["main"]
+      keyserver "keyserver.ubuntu.com"
+      key "1BB943DB"
+    end
+
+
+
+    else #Flavor
+      log "No extra repo needed for #{node[:db][:flavor]}."
+    end # Flavor
+  end #Ubuntu
 
 # Set MySQL 5.5 specific node variables in this recipe.
 #
@@ -80,7 +103,7 @@ log "Set #{node[:db_mysql][:server_packages_uninstall]}."
 node[:db_mysql][:server_packages_install] = value_for_platform(
   "ubuntu" => {
     "10.04" => [],
-    "default" => ["MariaDB-server"]
+    "default" => ["mariadb-server"]
   },
   "default" => ["MariaDB-server", "MariaDB-common", "MariaDB-shared", "MariaDB-compat", "MariaDB-devel"]
 )

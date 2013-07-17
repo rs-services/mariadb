@@ -340,7 +340,7 @@ action :install_client do
       },
       "ubuntu" => {
         "10.04" => [],
-        "default" => ["MariaDB-client"]
+        "default" => ["mariadb-client"]
       },
       "default" => []
     )
