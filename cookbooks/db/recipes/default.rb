@@ -27,19 +27,30 @@ end
 # provider for 'db' resource and database version.
 #
 provider_type = node[:db][:provider_type]
+log "Provider type is #{provider_type}."
 if not provider_type.nil?
   database_type = provider_type.match(/^db_([a-z]+)_(\d.\d)/)
   # Database provider type Ex: db_mysql
-  node[:db][:provider] = "db_#{database_type[1]}"
+  if #{database_type[1]}?("maria")
+    log "Setting flavor = mariadb"
+    node[:db][:flavor] = "mariadb"
+    node[:db][:provider] = "db_mysql"
+  else
+    node[:db][:provider] = "db_#{database_type[1]}"
+    node[:db][:flavor] = "#{database_type[1]}"
+  end
   # Database version number Ex: 5.1
   node[:db][:version] = database_type[2]
 end
 
 # Setup default values for database resource
 # See cookbooks/db_<provider>/providers/default.rb for the "install_client" action.
+log "Preparing to install_client."
+
 db node[:db][:data_dir] do
   persist true
   provider node[:db][:provider]
+  db_flavor node[:db][:flavor]
   db_version node[:db][:version]
   action :install_client
 end

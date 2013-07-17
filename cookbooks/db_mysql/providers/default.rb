@@ -306,7 +306,7 @@ action :install_client do
   )
 
   case version
-  when "5.1"
+   when "5.1"
     node[:db_mysql][:client_packages_install] = value_for_platform(
       ["centos", "redhat"] => {
         "5.8" => ["MySQL-shared-compat", "MySQL-devel-community", "MySQL-client-community"],
@@ -320,6 +320,32 @@ action :install_client do
     )
 
   when "5.5"
+   log "Running for version 5.5..."
+   if node[:db][:flavor] == "mariadb"
+    log " Detected #{node[:db][:flavor]}."
+    #Do MariaDB stuff
+    # Will uninstall mysql-libs, install mysql55-lib.
+    node[:db_mysql][:client_packages_uninstall] = value_for_platform(
+      ["centos", "redhat"] => {
+        "5.8" => [],
+        "default" => ["mysql-libs"]
+      },
+      "default" => []
+    )
+
+    node[:db_mysql][:client_packages_install] = value_for_platform(
+      ["centos", "redhat"] => {
+        "5.8" => ["MariaDB-client","MariaDB-shared", "MariaDB-devel"],
+        "default" => ["MariaDB-client", "MariaDB-shared", "MariaDB-devel"]
+      },
+      "ubuntu" => {
+        "10.04" => [],
+        "default" => ["MariaDB-client"]
+      },
+      "default" => []
+    )
+   else
+    log " Detected #{node[:db][:flavor]}."
     # CentOS/RedHat 6 by default has mysql-libs 5.1 installed as requirement for postfix.
     # Will uninstall mysql-libs, install mysql55-lib.
     node[:db_mysql][:client_packages_uninstall] = value_for_platform(
@@ -341,6 +367,7 @@ action :install_client do
       },
       "default" => []
     )
+   end
 
   else
     raise "MySQL version: #{version} not supported yet"
@@ -390,7 +417,7 @@ end
 action :install_server do
 
   platform = node[:platform]
-
+  log "Installing #{node[:db][:flavor]} for #{platform}."
   # MySQL server depends on MySQL client.
   # Calls the "install_client" action.
   action_install_client
@@ -403,6 +430,7 @@ action :install_server do
       action :remove
     end
   end unless packages == ""
+
 
   # Installs required server packages.
   packages = node[:db_mysql][:server_packages_install]
@@ -649,6 +677,7 @@ action :install_server do
 end
 
 action :install_client_driver do
+
   type = new_resource.driver_type
   log "  Installing mysql support for #{type} driver"
 

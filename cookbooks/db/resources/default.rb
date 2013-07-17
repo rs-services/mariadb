@@ -16,6 +16,7 @@ attribute :user, :kind_of => String, :default => "root"
 attribute :password, :kind_of => String, :default => ""
 attribute :data_dir, :kind_of => String, :default => "/mnt/storage"
 attribute :driver_type, :kind_of => String
+attribute :flavor, :kind_of => String
 
 # == Backup/Restore options
 attribute :lineage, :kind_of => String
@@ -39,6 +40,7 @@ attribute :machine_tag, :kind_of => String, :regex => /^([^:]+):(.+)=.+/
 attribute :dumpfile, :kind_of => String
 attribute :db_name, :kind_of => String
 attribute :db_version, :kind_of => String
+attribute :db_flavor, :kind_of => String
 
 # = General Database Actions
 #

@@ -56,6 +56,7 @@ end
 # Let others know we are an active DB
 # See http://support.rightscale.com/12-Guides/Chef_Cookbooks_Developer_Guide/Chef_Resources#RightLinkTag for the "right_link_tag" resource.
 right_link_tag "database:active=true"
+right_link_tg "database:#{node[:db][:provider]}=#{node[:db][:flavor]}" unless node[:db][:flavor]
 
 # Install server
 db node[:db][:data_dir] do

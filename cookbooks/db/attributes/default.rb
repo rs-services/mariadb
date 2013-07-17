@@ -12,6 +12,9 @@ default[:db][:dns][:master][:fqdn] = "localhost"
 # Initial settings for client operations on application servers
 default[:db][:data_dir] = "/mnt/storage"
 
+# Init flavor
+default[:db][:flavor] = ""
+
 # Default settings for database administrator user and password
 default[:db][:admin][:user] = "root"
 default[:db][:admin][:password] = ""
