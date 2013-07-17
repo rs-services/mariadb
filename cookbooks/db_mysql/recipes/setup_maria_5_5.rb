@@ -16,57 +16,57 @@ node[:db][:provider] = "db_mysql"
 log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
 
 
-  if node[:platform] =~ /redhat|centos/ do
-   package "yum-plugin-fastestmirror" do
-     action :install
-   end
-
-   if node[:db][:flavor] == "mariadb"
+if node[:db][:flavor] == "mariadb"
     log "Installing MariaDB repo for #{node[:platform]}..."
     #MariaDB repo
 
-    yum_key "RPM-GPG-KEY-MariaDB" do
-      url "https://yum.mariadb.org/RPM-GPG-KEY-MariaDB"
-      action :add
-    end
+  if node[:platform] =~ /redhat|centos/ do
+     package "yum-plugin-fastestmirror" do
+       action :install
+     end
 
-    yum_repository "MariaDB" do
-      repo_name "MariaDB"
-      description "MariaDB"
-      url "http://yum.mariadb.org/5.5/centos#{node[:platform_version].to_i}-amd64"
-      key "RPM-GPG-KEY-MariaDB"
-      action :add
-    end
+     yum_key "RPM-GPG-KEY-MariaDB" do
+       url "https://yum.mariadb.org/RPM-GPG-KEY-MariaDB"
+       action :add
+     end
 
-   else #Flavor
-     log "No extra repo needed for #{node[:db][:flavor]}."
-   end
-  end #Centos
+     yum_repository "MariaDB" do
+       repo_name "MariaDB"
+       description "MariaDB"
+       url "http://yum.mariadb.org/5.5/centos#{node[:platform_version].to_i}-amd64"
+       key "RPM-GPG-KEY-MariaDB"
+       action :add
+     end
+   
+  end
 
   if node[:platform] =~ /ubuntu|debian/ do
 
-    if node[:db][:flavor] == "mariadb"
-    log "Installing MariaDB repo for #{node[:platform]}..."
-    #MariaDB repo
-    package "python-software-properties" do
-      action :install
-    end
+       if node[:db][:flavor] == "mariadb"
+          log "Installing MariaDB repo for #{node[:platform]}..."
+          #MariaDB repo
+          
+          package "python-software-properties" do
+             action :install
+          end
 
 
-    apt_repository "MariaDB" do
-      uri "http://ftp.osuosl.org/pub/mariadb/repo/5.5/debian"
-      distribution node['lsb']['codename']
-      components ["main"]
-      keyserver "keyserver.ubuntu.com"
-      key "1BB943DB"
-    end
+       apt_repository "MariaDB" do
+          uri "http://ftp.osuosl.org/pub/mariadb/repo/5.5/debian"
+          distribution node['lsb']['codename']
+          components ["main"]
+          keyserver "keyserver.ubuntu.com"
+          key "1BB943DB"
+       end
+
+  end
 
 
-
-    else #Flavor
+  else
       log "No extra repo needed for #{node[:db][:flavor]}."
-    end # Flavor
-  end #Ubuntu
+  end
+
+end
 
 # Set MySQL 5.5 specific node variables in this recipe.
 #
