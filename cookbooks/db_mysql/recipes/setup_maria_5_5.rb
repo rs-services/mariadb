@@ -20,7 +20,7 @@ if node[:db][:flavor] == "mariadb"
     log "Installing MariaDB repo for #{node[:platform]}..."
     #MariaDB repo
 
-  if node[:platform] =~ /redhat|centos/ do
+  if node[:platform] =~ /redhat|centos/
      package "yum-plugin-fastestmirror" do
        action :install
      end
@@ -40,7 +40,7 @@ if node[:db][:flavor] == "mariadb"
    
   end
 
-  if node[:platform] =~ /ubuntu|debian/ do
+  if node[:platform] =~ /ubuntu|debian/
 
        if node[:db][:flavor] == "mariadb"
           log "Installing MariaDB repo for #{node[:platform]}..."
