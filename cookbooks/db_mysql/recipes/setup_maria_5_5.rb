@@ -20,7 +20,7 @@ if node[:db][:flavor] == "mariadb"
     log "Installing MariaDB repo for #{node[:platform]}..."
     #MariaDB repo
 
-  if node[:platform] =~ /redhat|centos/
+  if node[:platform] =~ /centos/
      package "yum-plugin-fastestmirror" do
        action :install
      end
@@ -38,6 +38,27 @@ if node[:db][:flavor] == "mariadb"
        action :add
      end
    
+  end
+
+
+  if node[:platform] =~ /redhat/
+     package "yum-plugin-fastestmirror" do
+       action :install
+     end
+
+     yum_key "RPM-GPG-KEY-MariaDB" do
+       url "https://yum.mariadb.org/RPM-GPG-KEY-MariaDB"
+       action :add
+     end
+
+     yum_repository "MariaDB" do
+       repo_name "MariaDB"
+       description "MariaDB"
+       url "http://yum.mariadb.org/5.5/rhel#{node[:platform_version].to_i}-amd64"
+       key "RPM-GPG-KEY-MariaDB"
+       action :add
+     end
+  
   end
 
   if node[:platform] =~ /ubuntu|debian/
