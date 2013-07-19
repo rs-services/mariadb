@@ -111,6 +111,26 @@ innodb_support_xa = 1
 innodb_flush_method=O_DIRECT
 innodb_fast_shutdown = 1
 
+
+<% if node[:db][:version] == '5.2' && node[:db][:flavor] == "mariadb" %>
+# MariaDB 5.2 Percona tuning
+
+innodb_stats_update_need_lock = 0
+innodb_adaptive_checkpoint=estimate
+innodb_use_purge_thread = 1
+innodb_doublewrite = true
+innodb_adaptive_flushing=false
+innodb_ibuf_active_contract = 1
+
+<% end %>
+
+<% if node[:db][:flavor] == "mariadb" %>
+# Warning Warning Warning
+innodb_extra_undoslots=<%= node[:db_mysql][:tunable][:innodb_extra_undoslots] %>
+<% end %>
+
+
+
 log-bin=<%=node[:db_mysql][:log_bin] %>
 relay-log-index=<%= node[:db][:data_dir] %>/<%= @relay_log %>-relay-log.index
 relay-log=<%= node[:db][:data_dir] %>/<%= @relay_log %>-relay-bin

@@ -9,6 +9,7 @@
 define :db_mysql_set_mycnf,
   :server_id => nil,
   :relay_log => nil,
+  :innodb_extra_undoslots => nil,
   :innodb_log_file_size => nil,
   :compressed_protocol => false,
   :slave_net_timeout => nil,
@@ -159,6 +160,8 @@ define :db_mysql_set_mycnf,
     mode "0644"
     variables(
       :server_id => params[:server_id],
+      :innodb_extra_undoslots => params[:innodb_extra_undoslots] || 
+        node[:db_mysql][:tunable][:innodb_extra_undoslots],
       :relay_log => params[:relay_log],
       :innodb_log_file_size => params[:innodb_log_file_size] ||
         node[:db_mysql][:tunable][:innodb_log_file_size],

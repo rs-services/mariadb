@@ -33,6 +33,7 @@ default[:db_mysql][:init_timeout] = "600"
 default[:db_mysql][:tunable][:expire_logs_days] = "2"
 default[:db_mysql][:tunable][:isamchk] = {}
 default[:db_mysql][:tunable][:myisamchk] = {}
+default[:db_mysql][:tunable][:innodb_extra_undoslots] = "OFF"
 
 # SSL attributes
 default[:db_mysql][:ssl][:ca_certificate] = nil
