@@ -22,9 +22,9 @@ recipe "db_mysql::setup_server_5_1",
 recipe "db_mysql::setup_server_5_5",
   "Sets the DB MySQL provider. Sets version 5.5 and node variables specific" +
   " to MySQL 5.5."
-recipe "db_mysql::setup_maria_5_2",
-  "Sets the DB MySQL provider. Sets version 5.2 and node variables specific" +
-  " to MariaDB 5.2."
+recipe "db_mysql::setup_maria_10_0",
+  "Sets the DB MySQL provider. Sets version 10.0 and node variables specific" +
+  " to MariaDB 10.0."
 recipe "db_mysql::setup_maria_5_5",
   "Sets the DB MySQL provider. Sets version 5.5 and node variables specific" +
   " to MariaDB 5.5."
@@ -48,7 +48,7 @@ attribute "db_mysql/server_usage",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -63,7 +63,7 @@ attribute "db_mysql/log_bin",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -79,7 +79,7 @@ attribute "db_mysql/binlog_format",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -93,7 +93,7 @@ attribute "db_mysql/tmpdir",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -106,7 +106,7 @@ attribute "db_mysql/init_timeout",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -119,7 +119,7 @@ attribute "db_mysql/tunable/expire_logs_days",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -131,7 +131,7 @@ attribute "db_mysql/tunable/innodb_extra_undoslots",
   :choice => ["ON","OFF"],
   :default => "OFF",
   :recipes => [
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -144,7 +144,7 @@ attribute "db_mysql/enable_mysql_upgrade",
   :choice => ["true", "false"],
   :default => "false",
   :recipes => ["db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"]
 
 attribute "db_mysql/compressed_protocol",
@@ -158,7 +158,7 @@ attribute "db_mysql/compressed_protocol",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -174,7 +174,7 @@ attribute "db_mysql/ssl/ca_certificate",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -190,7 +190,7 @@ attribute "db_mysql/ssl/master_certificate",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -206,7 +206,7 @@ attribute "db_mysql/ssl/master_key",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -222,7 +222,7 @@ attribute "db_mysql/ssl/slave_certificate",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
 
@@ -238,6 +238,6 @@ attribute "db_mysql/ssl/slave_key",
   :recipes => [
     "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
-    "db_mysql::setup_maria_5_2",
+    "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
   ]
