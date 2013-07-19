@@ -128,6 +128,7 @@ attribute "db_mysql/tunable/innodb_extra_undoslots",
   :description =>
     "Usually, InnoDB has 1024 undo slots in its rollback segment, so 1024 transactions can run in parallel. New transactions will fail if all slots are used. Setting this variable to 1 expands the available undo slots to 4072. Not recommended unless you get the 'Warning: cannot find a free slot for an undo log error' in the error log, as it makes data files unusable for ibbackup, or MariaDB servers not run with this option.",
   :required => "optional",
+  :choice => ["ON","OFF"],
   :default => "OFF",
   :recipes => [
     "db_mysql::setup_maria_5_2",
