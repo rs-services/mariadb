@@ -319,8 +319,8 @@ action :install_client do
       "default" => []
     )
 
-  when "5.5"
-   log "Running for version 5.5..."
+  when version.to_f  >= 5.5
+   log "Running for version #{version}..."
    if node[:db][:flavor] == "mariadb"
     log " Detected #{node[:db][:flavor]}."
     #Do MariaDB stuff
@@ -363,7 +363,7 @@ action :install_client do
       },
       "ubuntu" => {
         "10.04" => [],
-        "default" => ["libmysqlclient-dev", "mysql-client-5.5"]
+        "default" => ["libmysqlclient-dev", "mysql-client"]
       },
       "default" => []
     )
@@ -377,7 +377,7 @@ action :install_client do
   packages = node[:db_mysql][:client_packages_uninstall]
   log "  Packages to uninstall: #{packages.join(",")}" unless packages.empty?
   packages.each do |p|
-    use_rpm = version == "5.5" && node[:platform] =~ /redhat|centos/ && node[:platform_version].to_i == 6 && p == "mysql-libs"
+    use_rpm = version.to_f >= 5.5 && node[:platform] =~ /redhat|centos/ && node[:platform_version].to_i == 6 && p == "mysql-libs"
     r = package p do
       action :nothing
       options "--nodeps" if use_rpm
