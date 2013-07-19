@@ -288,5 +288,5 @@
     "db_mysql::setup_maria_10_0": "Sets the DB MySQL provider. Sets version 10.0 and node variables specific to MariaDB 10.0.",
     "db_mysql::setup_maria_5_5": "Sets the DB MySQL provider. Sets version 5.5 and node variables specific to MariaDB 5.5."
   },
-  "version": "13.4.0"
+  "version": "13.4.1"
 }
