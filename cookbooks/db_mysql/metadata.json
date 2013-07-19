@@ -50,6 +50,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "calculated": false,
@@ -63,6 +64,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "choice": [
@@ -84,6 +86,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "calculated": false,
@@ -97,6 +100,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "choice": [
@@ -113,6 +117,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "choice": [
@@ -129,6 +134,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "choice": [
@@ -163,6 +169,7 @@
       "default": "false",
       "recipes": [
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "calculated": false,
@@ -180,6 +187,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "calculated": false,
@@ -193,6 +201,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "choice": [
@@ -209,6 +218,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "choice": [
@@ -225,6 +235,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "choice": [
@@ -241,6 +252,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "choice": [
@@ -257,6 +269,7 @@
       "recipes": [
         "db_mysql::setup_server_5_1",
         "db_mysql::setup_server_5_5",
+        "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_5_5"
       ],
       "choice": [
@@ -271,6 +284,7 @@
   "recipes": {
     "db_mysql::setup_server_5_1": "Sets the DB MySQL provider. Sets version 5.1 and node variables specific to MySQL 5.1.",
     "db_mysql::setup_server_5_5": "Sets the DB MySQL provider. Sets version 5.5 and node variables specific to MySQL 5.5.",
+    "db_mysql::setup_maria_5_2": "Sets the DB MySQL provider. Sets version 5.2 and node variables specific to MariaDB 5.2.",
     "db_mysql::setup_maria_5_5": "Sets the DB MySQL provider. Sets version 5.5 and node variables specific to MariaDB 5.5."
   },
   "version": "13.4.0"
