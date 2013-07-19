@@ -65,9 +65,8 @@ if node[:db][:flavor] == "mariadb"
 
   else
       log "No extra repo needed for #{node[:db][:flavor]}."
-  end
-
 end
+
 
 # Set MySQL 5.5 specific node variables in this recipe.
 #
