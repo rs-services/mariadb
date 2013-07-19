@@ -17,6 +17,9 @@ node[:db][:provider] = "db_mysql"
 
 log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
 
+if node[:platform_version].to_i >= 6
+raise "MariaDB 5.2 is only supported on CentOS 5.  Please relaunch with the correct image."
+end
 
 if node[:db][:flavor] == "mariadb"
     log "Installing MariaDB repo for #{node[:platform]}..."
