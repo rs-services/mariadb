@@ -17,9 +17,9 @@ node[:db][:provider] = "db_mysql"
 
 log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
 
-if node[:platform_version].to_i >= 6
-raise "MariaDB 5.2 is only supported on CentOS 5.  Please relaunch with the correct image."
-end
+#if node[:platform_version].to_i >= 6
+#raise "MariaDB 5.2 is only supported on CentOS 5.  Please relaunch with the correct image."
+#end
 
 if node[:db][:flavor] == "mariadb"
     log "Installing MariaDB repo for #{node[:platform]}..."
@@ -38,7 +38,7 @@ if node[:db][:flavor] == "mariadb"
      yum_repository "MariaDB" do
        repo_name "MariaDB"
        description "MariaDB"
-       url "http://mirrors.scie.in/mariadb/mariadb-5.2.14/centos#{node[:platform_version].to_i}-amd64"
+       url "http://mirrors.scie.in/mariadb/mariadb-5.2.14/centos5-amd64"
        key "RPM-GPG-KEY-MariaDB"
        action :add
      end
@@ -59,7 +59,7 @@ if node[:db][:flavor] == "mariadb"
      yum_repository "MariaDB" do
        repo_name "MariaDB"
        description "MariaDB"
-       url "http://mirrors.scie.in/mariadb/mariadb-5.2.14/rhel#{node[:platform_version].to_i}-amd64"
+       url "http://mirrors.scie.in/mariadb/mariadb-5.2.14/rhel5-amd64"
        key "RPM-GPG-KEY-MariaDB"
        action :add
      end
