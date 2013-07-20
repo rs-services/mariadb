@@ -3,7 +3,7 @@ maintainer_email "support@rightscale.com"
 license          "Copyright RightScale, Inc. All rights reserved."
 description      "RightScale Database Manager"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "13.4.0"
+version          "13.4.1"
 
 # supports "centos", "~> 5.8", "~> 6"
 # supports "redhat", "~> 5.8"
@@ -371,9 +371,9 @@ attribute "db/provider_type",
     "Database provider type to use on client side. This must be a string" +
     " containing the provider cookbook name and (optionally) the version" +
     " of the database." +
-    " Example: db_mydatabase_1.0, db_mysql_5.1, db_mysql_5.5, db_maria_5.5, db_postgres_9.1",
+    " Example: db_mydatabase_1.0, db_mysql_5.1, db_mysql_5.5, db_maria_5.5, db_maria_10.0,  db_postgres_9.1",
   :required => "required",
-  :choice => ["db_mysql_5.1", "db_mysql_5.5", "db_maria_5.5", "db_postgres_9.1"],
+  :choice => ["db_mysql_5.1", "db_mysql_5.5", "db_maria_5.5", "db_maria_10.0", "db_postgres_9.1"],
   :recipes => ["db::default"]
 
 # == Backup/Restore

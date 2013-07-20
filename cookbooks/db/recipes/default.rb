@@ -41,7 +41,11 @@ if not provider_type.nil?
   end
   # Database version number Ex: 5.1
   node[:db][:version] = database_type[2]
+  log "Detected db version: #{node[:db][:version]}."
 end
+
+  log "Detected db version: #{node[:db][:version]}."
+  log "Provider: #{node[:db][:provider]}, Flavor: #{node[:db][:flavor]}"
 
 # Setup default values for database resource
 # See cookbooks/db_<provider>/providers/default.rb for the "install_client" action.
