@@ -377,7 +377,7 @@ action :install_client do
   packages = node[:db_mysql][:client_packages_uninstall]
   log "  Packages to uninstall: #{packages.join(",")}" unless packages.empty?
   packages.each do |p|
-    use_rpm = #{version}  && node[:platform] =~ /redhat|centos/ && p == "mysql-libs"
+    use_rpm = node[:platform] =~ /redhat|centos/ && node[:db][:flavor] == "mariadb" && p == "mysql-libs"
     r = package p do
       action :nothing
       options "--nodeps" if use_rpm
