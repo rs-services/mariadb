@@ -124,7 +124,7 @@ innodb_ibuf_active_contract = 1
 
 <% end %>
 
-<% if node[:db][:flavor] == "mariadb" %>
+<% if node[:db][:flavor] == "mariadb" && node[:db][:version].to_i < 10 %>
 # Warning Warning Warning
 innodb_extra_undoslots=<%= node[:db_mysql][:tunable][:innodb_extra_undoslots] %>
 <% end %>
