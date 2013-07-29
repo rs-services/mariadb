@@ -116,8 +116,8 @@ innodb_flush_method=O_DIRECT
 innodb_fast_shutdown = 1
 
 
-<% if node[:db][:version] == '5.2' && node[:db][:flavor] == "mariadb" %>
-# MariaDB 5.2 Percona tuning
+<% if node[:db][:version].to_f < 5.5 && node[:db][:flavor] == "mariadb" %>
+# MariaDB #{node[:db][:version]} Percona tuning
 
 innodb_stats_update_need_lock = 0
 innodb_adaptive_checkpoint=estimate
@@ -126,12 +126,20 @@ innodb_doublewrite = true
 innodb_adaptive_flushing=false
 innodb_ibuf_active_contract = 1
 
+innodb_extra_undoslots=<%= node[:db_mysql][:tunable][:innodb_extra_undoslots] %>
+innodb_fast_recovery = 1
+innodb_use_purge_thread = 1
 <% end %>
 
-<% if node[:db][:flavor] == "mariadb" && node[:db][:version].to_i < 10 %>
-# Warning Warning Warning
-innodb_extra_undoslots=<%= node[:db_mysql][:tunable][:innodb_extra_undoslots] %>
+<% if node[:db][:flavor] == "mariadb" && node[:db][:version].to_f >= 5.5 %>
+innodb_adaptive_flushing_method = estimate
+innodb_purge_threads = 1
+innodb_change_buffering = all
+innodb-fast-checksum = 1
+innodb_large_prefix = 1
+innodb_stats_update_need_lock = 0
 <% end %>
+
 
 
 
