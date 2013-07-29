@@ -22,56 +22,36 @@ log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
 #end
 
 if node[:db][:flavor] == "mariadb"
-    log "Installing MariaDB repo for #{node[:platform]}..."
+    log "Installing OurDelta MariaDB repo for #{node[:platform]}..."
     #MariaDB repo
 
-  if node[:platform] =~ /centos/
+  if node[:platform] =~ /centos|redhat/
      package "yum-plugin-fastestmirror" do
        action :install
      end
 
-     yum_key "RPM-GPG-KEY-MariaDB" do
-       url "https://yum.mariadb.org/RPM-GPG-KEY-MariaDB"
-       action :add
+     OurDeltaRepoRPM = "ourdelta-release-5-1.noarch.rpm"
+
+     remote_file "#{Chef::Config[:file_cache_path]}/#{OurDeltaRepoRPM}" do
+         source http://master.ourdelta.org/yum/CentOS-MariaDB52/ourdelta-release-5-1.noarch.rpm
+         mode "0755"
+         backup false
+         action :create_if_missing
      end
 
-     yum_repository "MariaDB" do
-       repo_name "MariaDB"
-       description "MariaDB"
-       url "http://mirrors.scie.in/mariadb/mariadb-5.2.14/centos5-amd64"
-       key "RPM-GPG-KEY-MariaDB"
-       action :add
+     package OurDeltaRepoRPM do
+         source "#{Chef::Config[:file_cache_path]}/#{OurDeltaRepoRPM}"
+         options "--nogpgcheck"
+         action :install
      end
-   
-  end
-
-
-  if node[:platform] =~ /redhat/
-     package "yum-plugin-fastestmirror" do
-       action :install
-     end
-
-     yum_key "RPM-GPG-KEY-MariaDB" do
-       url "https://yum.mariadb.org/RPM-GPG-KEY-MariaDB"
-       action :add
-     end
-
-     yum_repository "MariaDB" do
-       repo_name "MariaDB"
-       description "MariaDB"
-       url "http://mirrors.scie.in/mariadb/mariadb-5.2.14/rhel5-amd64"
-       key "RPM-GPG-KEY-MariaDB"
-       action :add
-     end
-  
-  end
+   end
 
   else
       log "No extra repo needed for #{node[:db][:flavor]}."
 end
 
 
-# Set MySQL 5.5 specific node variables in this recipe.
+# Set MySQL 5.2 specific node variables in this recipe.
 #
 node[:db][:socket] = value_for_platform(
   "ubuntu" => {
@@ -80,7 +60,7 @@ node[:db][:socket] = value_for_platform(
   "default" => "/var/lib/mysql/mysql.sock"
 )
 
-# http://dev.mysql.com/doc/refman/5.5/en/linux-installation-native.html
+# http://dev.mysql.com/doc/refman/5.1/en/linux-installation-native.html
 # For Red Hat and similar distributions, the MySQL distribution is divided into a
 # number of separate packages, mysql for the client tools, mysql-server for the
 # server and associated tools, and mysql-libs for the libraries.
