@@ -16,9 +16,6 @@ depends "block_device"
 depends "sys_dns"
 depends "rightscale"
 
-recipe "db_mysql::setup_server_5_1",
-  "Sets the DB MySQL provider. Sets version 5.1 and node variables specific" +
-  " to MySQL 5.1."
 recipe "db_mysql::setup_server_5_5",
   "Sets the DB MySQL provider. Sets version 5.5 and node variables specific" +
   " to MySQL 5.5."
@@ -46,7 +43,6 @@ attribute "db_mysql/server_usage",
   :required => "optional",
   :default => "shared",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -61,7 +57,6 @@ attribute "db_mysql/log_bin",
   :required => "optional",
   :default => "/mnt/ephemeral/mysql-binlogs/mysql-bin",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -77,7 +72,6 @@ attribute "db_mysql/binlog_format",
   :choice => ["STATEMENT", "ROW", "MIXED"],
   :default => "MIXED",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -91,7 +85,6 @@ attribute "db_mysql/tmpdir",
   :required => "optional",
   :default => "/mnt/ephemeral/mysqltmp",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -104,7 +97,6 @@ attribute "db_mysql/init_timeout",
   :required => "optional",
   :default => "600",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -117,7 +109,6 @@ attribute "db_mysql/tunable/expire_logs_days",
   :required => "optional",
   :default => "2",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -156,7 +147,6 @@ attribute "db_mysql/compressed_protocol",
   :choice => ["enabled", "disabled"],
   :default => "disabled",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -172,7 +162,6 @@ attribute "db_mysql/ssl/ca_certificate",
   :required => "optional",
   :default => "",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -188,7 +177,6 @@ attribute "db_mysql/ssl/master_certificate",
   :required => "optional",
   :default => "",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -204,7 +192,6 @@ attribute "db_mysql/ssl/master_key",
   :required => "optional",
   :default => "",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -220,7 +207,6 @@ attribute "db_mysql/ssl/slave_certificate",
   :required => "optional",
   :default => "",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"
@@ -236,7 +222,6 @@ attribute "db_mysql/ssl/slave_key",
   :required => "optional",
   :default => "",
   :recipes => [
-    "db_mysql::setup_server_5_1",
     "db_mysql::setup_server_5_5",
     "db_mysql::setup_maria_10_0",
     "db_mysql::setup_maria_5_5"

@@ -100,6 +100,10 @@ innodb_log_group_home_dir = /var/lib/mysql
 # some MySQL 5.5 specific config
 <% end %>
 
+<% if node[:db][:version].to_i == 10 %>
+# some MySQL 10.0 specific config
+<% end %>
+
 innodb_file_per_table
 innodb_buffer_pool_size = <%= node[:db_mysql][:tunable][:innodb_buffer_pool_size] %>
 innodb_additional_mem_pool_size = <%= node[:db_mysql][:tunable][:innodb_additional_mem_pool_size] %>
@@ -153,13 +157,6 @@ quote-names
 max_allowed_packet      = 16M
 
 [mysql]
-
-<% if node[:db][:version] == '5.1' %>
-# isam dropped after version 5.1
-[isamchk]
-key_buffer        = <%= node[:db_mysql][:tunable][:isamchk][:key_buffer] %>
-sort_buffer_size        = <%= node[:db_mysql][:tunable][:isamchk][:sort_buffer_size] %>
-<% end %>
 
 [myisamchk]
 key_buffer        = <%= node[:db_mysql][:tunable][:myisamchk][:key_buffer] %>
