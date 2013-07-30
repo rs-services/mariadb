@@ -12,9 +12,9 @@ version = "5.5"
 node[:db][:version] = version
 node[:db][:flavor] = "tokudb"
 node[:db][:provider] = "db_mysql"
-TokuTek= "mariadb-5.5.30-tokudb-7.0.3-linux-x86_64"
+TokuTek = "mariadb-5.5.30-tokudb-7.0.3-linux-x86_64"
 
-extract_path = /opt/tokutek
+extract_path = "/opt/tokutek"
 
 log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
 log "We setup MariaDB 5.5 first to get all MariaDB dependencies via yum."
@@ -147,7 +147,7 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
         cwd "#{Chef::Config[:file_cache_path]}"
         code <<-EOH
            mkdir -p #{extract_path}
-           tar xzf #{src_filename} -C #{extract_path}
+           tar xzf #{Chef::Config[:file_cache_path]}/#{TokuTek}.tar.gz -C #{extract_path}
            mv #{extract_path}/*/* #{extract_path}/
         EOH
       not_if { ::File.exists?(extract_path) }
@@ -155,7 +155,7 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
 
      link "#{extract_path}/#{TokuTek}" do
         to "#{extract_path}/mysql"
-     done
+     end
 
     directory "#{extract_path}/mysql" do
         owner "mysql"
