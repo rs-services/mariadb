@@ -33,7 +33,7 @@ if node[:db][:flavor] == "mariadb"
      OurDeltaRepoRPM = "ourdelta-release-5-1.noarch.rpm"
 
      remote_file "#{Chef::Config[:file_cache_path]}/#{OurDeltaRepoRPM}" do
-         source http://master.ourdelta.org/yum/CentOS-MariaDB52/ourdelta-release-5-1.noarch.rpm
+         source "http://master.ourdelta.org/yum/CentOS-MariaDB52/ourdelta-release-5-1.noarch.rpm"
          mode "0755"
          backup false
          action :create_if_missing
