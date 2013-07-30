@@ -319,7 +319,7 @@ action :install_client do
       "default" => []
     )
 
-  when "5.5", "10.0"
+  when "5.2", "5.5", "10.0"
    log "Running for version #{version}..."
    if node[:db][:flavor] == "mariadb"
     log " Detected #{node[:db][:flavor]}."
