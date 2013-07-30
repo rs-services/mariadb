@@ -31,9 +31,14 @@ log "Provider type is #{provider_type}."
 if not provider_type.nil?
   database_type = provider_type.match(/^db_([a-z]+)_(\d.\d)/)
   # Database provider type Ex: db_mysql
-  if #{database_type[1]}?("maria")
+  case database_type[1]
+  when "maria"
     log "Setting flavor = mariadb"
     node[:db][:flavor] = "mariadb"
+    node[:db][:provider] = "db_mysql"
+  when "toku"
+    log "Setting flavor = tokudb"
+    node[:db][:flavor] = "tokudb"
     node[:db][:provider] = "db_mysql"
   else
     node[:db][:provider] = "db_#{database_type[1]}"

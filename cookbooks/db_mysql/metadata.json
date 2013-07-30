@@ -50,7 +50,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "calculated": false,
       "type": "string"
@@ -63,7 +64,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "choice": [
 
@@ -84,7 +86,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "calculated": false,
       "type": "string"
@@ -97,7 +100,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "choice": [
 
@@ -113,7 +117,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "choice": [
 
@@ -129,7 +134,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "choice": [
 
@@ -148,7 +154,8 @@
       "default": "OFF",
       "recipes": [
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "calculated": false,
       "type": "string"
@@ -165,7 +172,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "calculated": false,
       "type": "string"
@@ -182,7 +190,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "calculated": false,
       "type": "string"
@@ -195,7 +204,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "choice": [
 
@@ -211,7 +221,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "choice": [
 
@@ -227,7 +238,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "choice": [
 
@@ -243,7 +255,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "choice": [
 
@@ -259,7 +272,8 @@
       "recipes": [
         "db_mysql::setup_maria_5_2",
         "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_5",
+        "db_mysql::setup_toku_5_5"
       ],
       "choice": [
 
@@ -273,6 +287,7 @@
   "recipes": {
     "db_mysql::setup_maria_10_0": "Sets the DB MySQL provider. Sets version 10.0 and node variables specific to MariaDB 10.0. - Alpha/Beta - NOT FOR PRODUCTION USE",
     "db_mysql::setup_maria_5_5": "Sets the DB MySQL provider. Sets version 5.5 and node variables specific to MariaDB 5.5.",
+    "db_mysql::setup_toku_5_5": "Sets the DB MySQL provider. Sets version 5.5 and node variables specific to MariaDB (TokuDB) 5.5.",
     "db_mysql::setup_maria_5_2": "Sets the DB MySQL provider. Sets version 5.2 and node variables specific to OurDelta build of MariaDB 5.2. - Experimental"
   },
   "version": "13.4.1"

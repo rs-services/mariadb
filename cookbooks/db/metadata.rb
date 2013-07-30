@@ -371,9 +371,9 @@ attribute "db/provider_type",
     "Database provider type to use on client side. This must be a string" +
     " containing the provider cookbook name and (optionally) the version" +
     " of the database." +
-    " Example: db_mydatabase_1.0, db_maria_5.2, db_maria_5.5, db_maria_10.0,  db_postgres_9.1",
+    " Example: db_mydatabase_1.0, db_maria_5.2, db_maria_5.5, db_maria_10.0, db_toku_5.5,  db_postgres_9.1",
   :required => "required",
-  :choice => ["db_maria_5.2", "db_maria_5.5", "db_maria_10.0", "db_postgres_9.1"],
+  :choice => ["db_maria_5.2", "db_maria_5.5", "db_maria_10.0", "db_toku_5.5", "db_postgres_9.1"],
   :recipes => ["db::default"]
 
 # == Backup/Restore
