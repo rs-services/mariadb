@@ -147,8 +147,7 @@
       ],
       "default": "OFF",
       "recipes": [
-        "db_mysql::setup_maria_10_0",
-        "db_mysql::setup_maria_5_5"
+        "db_mysql::setup_maria_5_2"
       ],
       "calculated": false,
       "type": "string"

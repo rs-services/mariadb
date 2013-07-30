@@ -122,8 +122,7 @@ attribute "db_mysql/tunable/innodb_extra_undoslots",
   :choice => ["ON","OFF"],
   :default => "OFF",
   :recipes => [
-    "db_mysql::setup_maria_10_0",
-    "db_mysql::setup_maria_5_5"
+    "db_mysql::setup_maria_5_2"
   ]
 
 attribute "db_mysql/enable_mysql_upgrade",
