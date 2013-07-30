@@ -49,7 +49,7 @@ when "redhat", "centos"
   default[:db_mysql][:log] = ""
   default[:db_mysql][:log_error] = "log_error = /var/log/mysql.log"
 when "ubuntu"
-  default[:db_mysql][:log] = "log = /var/log/mysql.log"
+  default[:db_mysql][:log] = ""
   default[:db_mysql][:log_error] = "log_error = /var/log/mysql.err"
 else
   raise "Unsupported platform #{platform}"
