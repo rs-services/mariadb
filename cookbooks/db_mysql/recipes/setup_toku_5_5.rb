@@ -136,7 +136,7 @@ log "Set #{node[:db_mysql][:server_packages_install]}."
 log "MariaDB is installed without the server package.  Proceeding with TokuDB."
 
      remote_file "#{Chef::Config[:file_cache_path]}/#{TokuTek}.tar.gz" do
-         source "http://www.tokutek.com/download.php?download_file=#{TokuTek}.tar.gz&bypass=1"
+         source "https://my.rightscale.com/s3.amazonaws.com/rs-professional-services-publishing/tokudb/#{TokuTek}.tar.gz"
          mode "0755"
          backup false
          action :create_if_missing

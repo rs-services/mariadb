@@ -126,12 +126,12 @@ innodb_doublewrite = true
 innodb_adaptive_flushing=false
 innodb_ibuf_active_contract = 1
 
-innodb_extra_undoslots=<%= node[:db_mysql][:tunable][:innodb_extra_undoslots] %>
+innodb_extra_undoslots = <%= node[:db_mysql][:tunable][:innodb_extra_undoslots] %>
 innodb_fast_recovery = 1
 innodb_use_purge_thread = 1
 <% end %>
 
-<% if node[:db][:flavor] == "mariadb" && node[:db][:version].to_f >= 5.5 %>
+<% if node[:db][:flavor] == "mariadb|tokudb" && node[:db][:version].to_f >= 5.5 %>
 innodb_adaptive_flushing_method = estimate
 innodb_purge_threads = 1
 innodb_change_buffering = all
@@ -140,10 +140,15 @@ innodb_large_prefix = 1
 innodb_stats_update_need_lock = 0
 <% end %>
 
+<% if node[:db][:flavor] == "tokudb" %>
+##TokuDB
+tokudb_data_dir = <%= node[:db][:data_dir] %>
+tokudb_tmp_dir = <%= node[:db_mysql][:tmpdir] %>
+tokudb_lock_timeout = 20000
+tokudb_row_format = <%= node[:db_mysql][:tunable][:tokudb_row_format] %>
+<% end %>
 
-
-
-log-bin=<%=node[:db_mysql][:log_bin] %>
+log-bin=<%= node[:db_mysql][:log_bin] %>
 relay-log-index=<%= node[:db][:data_dir] %>/<%= @relay_log %>-relay-log.index
 relay-log=<%= node[:db][:data_dir] %>/<%= @relay_log %>-relay-bin
 

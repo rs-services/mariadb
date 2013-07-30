@@ -68,7 +68,7 @@ define :db_mysql_set_mycnf,
 
   # Sets the buffer sizes and InnoDB log properties.
   # Overrides buffer sizes for really small servers.
-  if mem < 1 * GB
+  if mem < 1 * GB || node[:db_mysql][:flavor] == "tokudb"
     node[:db_mysql][:tunable][:key_buffer] ||=
       value_with_units(16, "M", usage)
     node[:db_mysql][:tunable][:isamchk][:key_buffer] ||=
@@ -108,7 +108,7 @@ define :db_mysql_set_mycnf,
   # 10GB - 25GB
   # 25GB - 50GB
   # >50GB
-  if mem < 3 * GB
+  if mem < 3 * GB && node[:db_mysql][:flavor] != "tokudb"
     node[:db_mysql][:tunable][:table_cache] ||= (256 * usage).to_i
     node[:db_mysql][:tunable][:sort_buffer_size] ||=
       value_with_units(2, "M", usage)
@@ -116,7 +116,7 @@ define :db_mysql_set_mycnf,
       value_with_units(50, "M", usage)
     node[:db_mysql][:tunable][:myisam_sort_buffer_size] ||=
       value_with_units(64, "M", usage)
-  elsif mem < 10 * GB
+  elsif mem < 10 * GB && node[:db_mysql][:flavor] != "tokudb"
     node[:db_mysql][:tunable][:table_cache] ||= (512 * usage).to_i
     node[:db_mysql][:tunable][:sort_buffer_size] ||=
       value_with_units(4, "M", usage)
@@ -124,7 +124,7 @@ define :db_mysql_set_mycnf,
       value_with_units(200, "M", usage)
     node[:db_mysql][:tunable][:myisam_sort_buffer_size] ||=
       value_with_units(96, "M", usage)
-  elsif mem < 25 * GB
+  elsif mem < 25 * GB && node[:db_mysql][:flavor] != "tokudb"
     node[:db_mysql][:tunable][:table_cache] ||= (1024 * usage).to_i
     node[:db_mysql][:tunable][:sort_buffer_size] ||=
       value_with_units(8, "M", usage)
@@ -132,7 +132,7 @@ define :db_mysql_set_mycnf,
       value_with_units(300, "M", usage)
     node[:db_mysql][:tunable][:myisam_sort_buffer_size] ||=
       value_with_units(128, "M", usage)
-  elsif mem < 50 * GB
+  elsif mem < 50 * GB && node[:db_mysql][:flavor] != "tokudb"
     node[:db_mysql][:tunable][:table_cache] ||= (2048 * usage).to_i
     node[:db_mysql][:tunable][:sort_buffer_size] ||=
       value_with_units(16, "M", usage)

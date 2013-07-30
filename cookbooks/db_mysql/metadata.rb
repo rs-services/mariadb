@@ -136,6 +136,15 @@ attribute "db_mysql/tunable/innodb_extra_undoslots",
     "db_mysql::setup_toku_5_5"
   ]
 
+attribute "db_mysql/tunable/tokudb_row_format",
+  :display_name => "TokuDB Default Compression Type",
+  :description =>
+    "TokuDB supports three types of default compression: tokudb_small, tokudb_default, tokudb_fast, and tokudb_uncompressed. Please see section 3.5 of the TokuDB guide.",
+  :required => "optional",
+  :choice => ["tokudb_small","tokudb_default","tokudb_fast","tokudb_uncompressed"],
+  :default => "tokudb_small",
+  :recipes => ["db_mysql::setup_toku_5_5"]
+
 attribute "db_mysql/enable_mysql_upgrade",
   :display_name => "Enable mysql_upgrade",
   :description =>
