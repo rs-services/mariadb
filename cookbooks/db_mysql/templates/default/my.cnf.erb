@@ -131,7 +131,7 @@ innodb_fast_recovery = 1
 innodb_use_purge_thread = 1
 <% end %>
 
-<% if node[:db][:flavor] == "mariadb" && node[:db][:version].to_f >= 5.5 %>
+<% if node[:db][:flavor] == "mariadb" && node[:db][:version].to_f == 5.5 %>
 innodb_adaptive_flushing_method = estimate
 innodb_purge_threads = 1
 innodb_change_buffering = all
@@ -140,6 +140,11 @@ innodb_large_prefix = 1
 innodb_stats_update_need_lock = 0
 <% end %>
 
+<% if node[:db][:flavor] == "mariadb" && node[:db][:version].to_f >= 5.5 %>
+innodb_purge_threads = 1
+innodb_change_buffering = all
+innodb_large_prefix = 1
+<% end %>
 
 
 
