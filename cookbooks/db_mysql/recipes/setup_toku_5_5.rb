@@ -66,7 +66,7 @@ if node[:db][:flavor] == "mariadb|tokudb"
 
   if node[:platform] =~ /ubuntu|debian/
 
-       if node[:db][:flavor] == "mariadb"
+       if node[:db][:flavor] == "mariadb|tokudb"
           log "Installing MariaDB repo for #{node[:platform]}..."
           #MariaDB repo
           
