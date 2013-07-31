@@ -147,14 +147,18 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
         code <<-EOH
            mkdir -p #{extract_path}
            tar xzf #{Chef::Config[:file_cache_path]}/#{node[:db_mysql][:tokutek]}.tar.gz -C #{extract_path}
-           mv #{extract_path}/*/* #{extract_path}/
         EOH
       not_if { ::File.exists?(extract_path) }
      end
 
-     link "#{extract_path}/#{node[:db_mysql][:tokutek]}" do
-        to "#{extract_path}/mysql"
+     link "#{extract_path}/mysql" do
+        to "#{extract_path}/#{node[:db_mysql][:tokutek]}"
      end
+
+    group "mysql" do
+       gid 927
+       action :create
+    end
 
     user "mysql" do
        name "MariaDB"
