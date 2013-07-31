@@ -12,14 +12,13 @@ version = "5.5"
 node[:db][:version] = version
 node[:db][:flavor] = "tokudb"
 node[:db][:provider] = "db_mysql"
-TokuTek = "mariadb-5.5.30-tokudb-7.0.3-linux-x86_64"
 
 extract_path = "/opt/tokutek"
 
 log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
 log "We setup MariaDB 5.5 first to get all MariaDB dependencies via yum."
 
-if node[:db][:flavor] == "mariadb|tokudb" 
+if node[:db][:flavor] =~ /mariadb|tokudb/
     log "Installing MariaDB repo for #{node[:platform]}..."
     #MariaDB repo
 
@@ -40,7 +39,7 @@ if node[:db][:flavor] == "mariadb|tokudb"
        key "RPM-GPG-KEY-MariaDB"
        action :add
      end
-   
+     log "Installed repo for #{node[:platform]}"
   end
 
 
@@ -66,7 +65,7 @@ if node[:db][:flavor] == "mariadb|tokudb"
 
   if node[:platform] =~ /ubuntu|debian/
 
-       if node[:db][:flavor] == "mariadb|tokudb"
+       if node[:db][:flavor] =~ /mariadb|tokudb/
           log "Installing MariaDB repo for #{node[:platform]}..."
           #MariaDB repo
           
@@ -135,8 +134,8 @@ log "Set #{node[:db_mysql][:server_packages_install]}."
 
 log "MariaDB is installed without the server package.  Proceeding with TokuDB."
 
-     remote_file "#{Chef::Config[:file_cache_path]}/#{TokuTek}.tar.gz" do
-         source "https://my.rightscale.com/s3.amazonaws.com/rs-professional-services-publishing/tokudb/#{TokuTek}.tar.gz"
+     remote_file "#{Chef::Config[:file_cache_path]}/#{node[:db_mysql][:tokutek]}.tar.gz" do
+         source "http://rs-professional-services-publishing.s3.amazonaws.com/tokudb/#{node[:db_mysql][:tokutek]}.tar.gz"
          mode "0755"
          backup false
          action :create_if_missing
@@ -147,15 +146,24 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
         cwd "#{Chef::Config[:file_cache_path]}"
         code <<-EOH
            mkdir -p #{extract_path}
-           tar xzf #{Chef::Config[:file_cache_path]}/#{TokuTek}.tar.gz -C #{extract_path}
+           tar xzf #{Chef::Config[:file_cache_path]}/#{node[:db_mysql][:tokutek]}.tar.gz -C #{extract_path}
            mv #{extract_path}/*/* #{extract_path}/
         EOH
       not_if { ::File.exists?(extract_path) }
      end
 
-     link "#{extract_path}/#{TokuTek}" do
+     link "#{extract_path}/#{node[:db_mysql][:tokutek]}" do
         to "#{extract_path}/mysql"
      end
+
+    user "mysql" do
+       name "MariaDB"
+       comment "#{node[:db_mysql][:tokutek]}"
+       uid 927
+       gid "mysql"
+       system true
+       action :create
+    end
 
     directory "#{extract_path}/mysql" do
         owner "mysql"
@@ -163,13 +171,12 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
         recursive true
     end
 
-   remote_file "mysql_convert_table_format" do
+   remote_file "#{extract_path}/mysql/mysql_convert_table_format" do
       source "https://raw.github.com/azilber/mariadb/45f81eba12283e58717ab2b3de02b9e2054ee2ec/scripts/mysql_convert_table_format.sh"  
       mode "0755"
       backup false
       action :create_if_missing
    end
-
 
 
 node[:db][:init_timeout] = node[:db_mysql][:init_timeout]
