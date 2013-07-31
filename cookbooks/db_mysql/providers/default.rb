@@ -321,7 +321,7 @@ action :install_client do
 
   when "5.5", "10.0"
    log "Running for version #{version}..."
-   if node[:db][:flavor] == "mariadb|tokudb"
+   if node[:db][:flavor] =~ /mariadb|tokudb/
     log " Detected #{node[:db][:flavor]}."
     #Do MariaDB stuff
     # Will uninstall mysql-libs, install mysql55-lib.
