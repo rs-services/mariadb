@@ -128,7 +128,7 @@ node[:db_mysql][:server_packages_install] = value_for_platform(
     "10.04" => [],
     "default" => ["mariadb-server"]
   },
-  "default" => ["MariaDB-common", "MariaDB-shared", "MariaDB-compat", "MariaDB-devel"]
+  "default" => ["MariaDB-server", "MariaDB-common", "MariaDB-shared", "MariaDB-compat", "MariaDB-devel"]
 )
 log "Set #{node[:db_mysql][:server_packages_install]}."
 
