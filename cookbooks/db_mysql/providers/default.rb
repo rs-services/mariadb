@@ -654,6 +654,14 @@ action :install_server do
     EOH
   end
 
+  #Hack for rightscale_tools for mysql
+  if node[:db][:flavor] == "mariadb"
+    link "/etc/init.d/mysqld" do
+        to "/etc/init.d/mysql"
+        only_if { platform == "centos" }
+     end
+  end
+
   Chef::Log.info "  Server installed.  Starting MySQL"
   # Starts MySQL.
   # See cookbooks/db_mysql/providers/default.rb for the "start" action.
