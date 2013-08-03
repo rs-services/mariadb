@@ -446,9 +446,16 @@ action :install_server do
   end
 
   # Creates MySQL server system tables.
-  touchfile = ::File.expand_path "~/.mysql_installed"
-  execute "/usr/bin/mysql_install_db ; touch #{touchfile}" do
-    creates touchfile
+  if node[:db][:flavor] =~ /mariadb|tokudb/
+     touchfile = ::File.expand_path "~/.mysql_installed"
+     execute "#{node[:db_mysql][:tokutek][:base_dir]}/scripts/mysql_install_db --no-defaults --basedir=#{node[:db_mysql][:tokutek][:base_dir]} --datadir=#{node[:db_mysql][:datadir]} ; touch #{touchfile}" do
+       creates touchfile
+     end
+  else
+     touchfile = ::File.expand_path "~/.mysql_installed"
+     execute "/usr/bin/mysql_install_db ; touch #{touchfile}" do
+       creates touchfile
+     end
   end
 
   # Moves MySQL default db to storage location, removes ib_logfiles for re-config of innodb_log_file_size.
@@ -481,6 +488,11 @@ action :install_server do
 
   # Creates it so MySQL can use it if configured.
   file "/var/log/mysqlslow.log" do
+    owner "mysql"
+    group "mysql"
+  end
+
+  file "/var/log/mysql.log" do
     owner "mysql"
     group "mysql"
   end

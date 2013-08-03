@@ -13,8 +13,6 @@ node[:db][:version] = version
 node[:db][:flavor] = "tokudb"
 node[:db][:provider] = "db_mysql"
 
-extract_path = "/opt/tokutek"
-
 log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
 log "We setup MariaDB 5.5 first to get all MariaDB dependencies via yum."
 
@@ -134,25 +132,24 @@ log "Set #{node[:db_mysql][:server_packages_install]}."
 
 log "MariaDB is installed without the server package.  Proceeding with TokuDB."
 
-     remote_file "#{Chef::Config[:file_cache_path]}/#{node[:db_mysql][:tokutek]}.tar.gz" do
-         source "http://rs-professional-services-publishing.s3.amazonaws.com/tokudb/#{node[:db_mysql][:tokutek]}.tar.gz"
+     remote_file "#{Chef::Config[:file_cache_path]}/#{node[:db_mysql][:tokutek][:version]}.tar.gz" do
+         source "http://rs-professional-services-publishing.s3.amazonaws.com/tokudb/#{node[:db_mysql][:tokutek][:version]}.tar.gz"
          mode "0755"
          backup false
          action :create_if_missing
      end
 
-
      bash 'extract_tar' do
         cwd "#{Chef::Config[:file_cache_path]}"
         code <<-EOH
-           mkdir -p #{extract_path}
-           tar xzf #{Chef::Config[:file_cache_path]}/#{node[:db_mysql][:tokutek]}.tar.gz -C #{extract_path}
+           mkdir -p #{node[:db_mysql][:tokutek][:install_path]}
+           tar xzf #{Chef::Config[:file_cache_path]}/#{node[:db_mysql][:tokutek][:version]}.tar.gz -C #{node[:db_mysql][:tokutek][:install_path]}
         EOH
-      not_if { ::File.exists?(extract_path) }
+      not_if { ::File.exists?([:db_mysql][:tokutek][:install_path]) }
      end
 
-     link "#{extract_path}/mysql" do
-        to "#{extract_path}/#{node[:db_mysql][:tokutek]}"
+     link "#{node[:db_mysql][:tokutek][:base_dir]}" do
+        to "#{node[:db_mysql][:tokutek][:install_path]}/#{node[:db_mysql][:tokutek][:version]}"
      end
 
     group "mysql" do
@@ -162,7 +159,7 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
 
     user "mysql" do
        name "MariaDB"
-       comment "#{node[:db_mysql][:tokutek]}"
+       comment "#{node[:db_mysql][:tokutek][:version]}"
        uid 927
        gid "mysql"
        system true

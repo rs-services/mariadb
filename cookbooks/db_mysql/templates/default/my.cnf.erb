@@ -92,9 +92,9 @@ slave-net-timeout = <%= @slave_net_timeout %>
 # * InnoDB
 #
 
-innodb_data_home_dir = /var/lib/mysql/
+innodb_data_home_dir = <%= node[:db_mysql][:datadir] %>/
 innodb_data_file_path = ibdata1:10M:autoextend
-innodb_log_group_home_dir = /var/lib/mysql
+innodb_log_group_home_dir = <%= node[:db_mysql][:datadir] %>/
 
 <% if node[:db][:version] == '5.5' %>
 # some MySQL 5.5 specific config
@@ -142,15 +142,15 @@ innodb_stats_update_need_lock = 0
 
 <% if node[:db][:flavor] == "tokudb" %>
 ##TokuDB
-tokudb_data_dir = <%= node[:db][:data_dir] %>
+tokudb_data_dir = <%= node[:db][:datadir] %>
 tokudb_tmp_dir = <%= node[:db_mysql][:tmpdir] %>
 tokudb_lock_timeout = 20000
 tokudb_row_format = <%= node[:db_mysql][:tunable][:tokudb_row_format] %>
 <% end %>
 
 log-bin=<%= node[:db_mysql][:log_bin] %>
-relay-log-index=<%= node[:db][:data_dir] %>/<%= @relay_log %>-relay-log.index
-relay-log=<%= node[:db][:data_dir] %>/<%= @relay_log %>-relay-bin
+relay-log-index=<%= node[:db][:datadir] %>/<%= @relay_log %>-relay-log.index
+relay-log=<%= node[:db][:datadir] %>/<%= @relay_log %>-relay-bin
 
 slave_compressed_protocol = <%= @compressed_protocol %>
 

@@ -9,7 +9,9 @@
 # Recommended attributes
 
 default[:db_mysql][:collectd_master_slave_mode] = ""
-default[:db_mysql][:tokutek] = "mariadb-5.5.30-tokudb-7.0.3-linux-x86_64"
+default[:db_mysql][:tokutek][:version] = "mariadb-5.5.30-tokudb-7.0.3-linux-x86_64"
+default[:db_mysql][:tokutek][:install_path] = "/opt/tokutek"
+default[:db_mysql][:tokutek][:base_dir] = "/opt/tokutek/mysql"
 # Optional attributes
 
 default[:db_mysql][:port] = "3306"
