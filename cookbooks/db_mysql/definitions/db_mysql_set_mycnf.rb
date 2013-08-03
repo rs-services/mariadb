@@ -33,15 +33,27 @@ define :db_mysql_set_mycnf,
   mem = node[:memory][:total].to_i / 1024
   log "  Auto-tuning MySQL parameters. Total memory: #{mem}MB"
 
-  node[:db_mysql][:tunable][:query_cache_size] ||=
-    value_with_units((mem * 0.01).to_i, "M", usage)
-  log "  Setting query_cache_size" +
-    " to: #{node[:db_mysql][:tunable][:query_cache_size]}"
+  if node[:db_mysql][:flavor] == "tokudb"
+    node[:db_mysql][:tunable][:query_cache_size] ||=
+       value_with_units((mem * 0.01).to_i, "K", usage)
+     log "  Setting query_cache_size" +
+       " to: #{node[:db_mysql][:tunable][:query_cache_size]}"
 
-  node[:db_mysql][:tunable][:innodb_buffer_pool_size] ||=
-    value_with_units((mem * 0.8).to_i, "M", usage)
-  log "  Setting innodb_buffer_pool_size" +
-    " to: #{node[:db_mysql][:tunable][:innodb_buffer_pool_size]}"
+     node[:db_mysql][:tunable][:innodb_buffer_pool_size] ||=
+       value_with_units((mem * 0.8).to_i, "K", usage)
+     log "  Setting innodb_buffer_pool_size" +
+       " to: #{node[:db_mysql][:tunable][:innodb_buffer_pool_size]}"
+  else
+     node[:db_mysql][:tunable][:query_cache_size] ||=
+       value_with_units((mem * 0.01).to_i, "K", usage)
+     log "  Setting query_cache_size" +
+       " to: #{node[:db_mysql][:tunable][:query_cache_size]}"
+
+     node[:db_mysql][:tunable][:innodb_buffer_pool_size] ||=
+       value_with_units((mem * 0.8).to_i, "K", usage)
+     log "  Setting innodb_buffer_pool_size" +
+       " to: #{node[:db_mysql][:tunable][:innodb_buffer_pool_size]}"
+  end
 
   # Fixed parameters, common value for all instance sizes
   #
