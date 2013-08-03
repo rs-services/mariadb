@@ -27,7 +27,7 @@ recipe "db_mysql::setup_toku_5_5",
   " to MariaDB (TokuDB) 5.5."
 recipe "db_mysql::setup_maria_5_2",
   "Sets the DB MySQL provider. Sets version 5.2 and node variables specific" +
-  " to OurDelta build of MariaDB 5.2. - Experimental"
+  " to OurDelta build of MariaDB 5.2. - Experimental and not for production use."
 
 attribute "db_mysql",
   :display_name => "General Database Options",
@@ -131,9 +131,7 @@ attribute "db_mysql/tunable/innodb_extra_undoslots",
   :choice => ["ON","OFF"],
   :default => "OFF",
   :recipes => [
-    "db_mysql::setup_maria_10_0",
-    "db_mysql::setup_maria_5_5",
-    "db_mysql::setup_toku_5_5"
+    "db_mysql::setup_maria_5_2"
   ]
 
 attribute "db_mysql/tunable/tokudb_row_format",
