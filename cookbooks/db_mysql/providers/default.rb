@@ -377,7 +377,7 @@ action :install_client do
   packages = node[:db_mysql][:client_packages_uninstall]
   log "  Packages to uninstall: #{packages.join(",")}" unless packages.empty?
   packages.each do |p|
-    use_rpm = node[:platform] =~ /redhat|centos/ && node[:db][:flavor] == "mariadb" && p == "mysql-libs"
+    use_rpm = node[:platform] =~ /redhat|centos/ && node[:db][:flavor] =~ /mariadb|tokudb/ && p == "mysql-libs"
     r = package p do
       action :nothing
       options "--nodeps" if use_rpm
@@ -655,7 +655,7 @@ action :install_server do
   end
 
   #Hack for rightscale_tools for mysql
-  if node[:db][:flavor] == "mariadb"
+  if node[:db][:flavor] =~ /mariadb|tokudb/
     link "/etc/init.d/mysqld" do
         to "/etc/init.d/mysql"
         only_if { platform == "centos" }
