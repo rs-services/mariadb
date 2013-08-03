@@ -495,6 +495,13 @@ action :install_server do
   file "/var/log/mysql.log" do
     owner "mysql"
     group "mysql"
+    only_if { platform =~ /redhat|centos/ }
+  end
+
+  file "/var/log/mysql.err" do
+    owner "mysql"
+    group "mysql"
+    only_if { platform == "ubuntu" }
   end
 
   # Ensures that config directories exist.

@@ -145,7 +145,7 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
            mkdir -p #{node[:db_mysql][:tokutek][:install_path]}
            tar xzf #{Chef::Config[:file_cache_path]}/#{node[:db_mysql][:tokutek][:version]}.tar.gz -C #{node[:db_mysql][:tokutek][:install_path]}
         EOH
-      not_if { ::File.exists?([:db_mysql][:tokutek][:install_path]) }
+      not_if { ::File.exists?(node[:db_mysql][:tokutek][:install_path]) }
      end
 
      link "#{node[:db_mysql][:tokutek][:base_dir]}" do
@@ -166,13 +166,13 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
        action :create
     end
 
-    directory "#{extract_path}/mysql" do
+    directory "#{node[:db_mysql][:tokutek][:install_path}/mysql" do
         owner "mysql"
         group "mysql"
         recursive true
     end
 
-   remote_file "#{extract_path}/mysql/mysql_convert_table_format" do
+   remote_file "#{node[:db_mysql][:tokutek][:base_dir}/scripts/mysql_convert_table_format" do
       source "https://raw.github.com/azilber/mariadb/45f81eba12283e58717ab2b3de02b9e2054ee2ec/scripts/mysql_convert_table_format.sh"  
       mode "0755"
       backup false
