@@ -647,16 +647,17 @@ action :install_server do
   end
 
   # Specific CentOs configs:
-  ruby_block "Change init" do
-     only_if { platform =~ /redhat|centos/ && node[:db_mysql][:flavor] == "tokudb" }
-     Chef::Log.info "Changing /etc/init.d/mysql for TokuDB"
-     block do
-        require 'chef/util/file_edit'
-        nc = Chef::Util::FileEdit.new("/etc/init.d/mysql")
-        nc.search_file_replace_line(/^basedir/, "basedir=#{node[:db_mysql][:tokutek][:base_dir]}")
-	nc.search_file_replace_line(/^datadir/, "datadir=#{node[:db_mysql][datadir]}")
-        nc.write_file
-     end
+  if platform =~ /redhat|centos/ && node[:db_mysql][:flavor] == "tokudb"
+     ruby_block "Change init" do
+        Chef::Log.info "Changing /etc/init.d/mysql for TokuDB"
+        block do
+           require 'chef/util/file_edit'
+           nc = Chef::Util::FileEdit.new("/etc/init.d/mysql")
+           nc.search_file_replace_line(/^basedir/, "basedir=#{node[:db_mysql][:tokutek][:base_dir]}")
+	   nc.search_file_replace_line(/^datadir/, "datadir=#{node[:db_mysql][datadir]}")
+           nc.write_file
+        end
+      end
    end
 
   # Specific configs for ubuntu:
