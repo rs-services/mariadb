@@ -649,7 +649,7 @@ action :install_server do
   # Specific CentOs configs:
   ruby_block "Change init" do
      only_if { platform =~ /redhat|centos/ && node[:db_mysql][:flavor] == "tokudb" }
-     log "Changing /etc/init.d/mysql for TokuDB"
+     Chef::Log.info "Changing /etc/init.d/mysql for TokuDB"
      block do
         require 'chef/util/file_edit'
         nc = Chef::Util::FileEdit.new("/etc/init.d/mysql")
