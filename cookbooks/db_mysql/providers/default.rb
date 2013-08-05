@@ -646,26 +646,6 @@ action :install_server do
     only_if { platform =~ /redhat|centos/ }
   end
 
-  # Specific CentOs configs:
-  log "Platform: #{platform}, flavor: #{node[:db_mysql][:flavor]}"
-  if platform =~ /redhat|centos/
-     ruby_block "Change init" do
-        only_if { node[:db_mysql][:flavor] =~ /tokudb/ }
-        Chef::Log.info "Changing /etc/init.d/mysql for TokuDB"
-        block do
-           require 'chef/util/file_edit'
-           nc = Chef::Util::FileEdit.new("/etc/init.d/mysql")
-           nc.search_file_replace_line(/^basedir/, "basedir=#{node[:db_mysql][:tokutek][:base_dir]}")
-	   nc.search_file_replace_line(/^datadir/, "datadir=#{node[:db_mysql][datadir]}")
-           nc.write_file
-        end
-      end
-   elsif platform =~ /ubuntu/
-     log "Do ubuntu stuff"
-   else
-     log "Unknown distro."
-   end
-
   # Specific configs for ubuntu:
   # * sets config file localhost access w/ root and no password
   # * disables the 'check_for_crashed_tables'.
@@ -692,6 +672,27 @@ action :install_server do
       chown -R mysql:mysql #{dir}
     EOH
   end
+
+  # Specific CentOs configs:
+  log "Platform: #{platform}, flavor: #{node[:db][:flavor]}"
+  if platform =~ /redhat|centos/
+     ruby_block "Change init" do
+        only_if { node[:db][:flavor] =~ /tokudb/ }
+        Chef::Log.info "Changing /etc/init.d/mysql for TokuDB"
+        block do
+           require 'chef/util/file_edit'
+           nc = Chef::Util::FileEdit.new("/etc/init.d/mysql")
+           nc.search_file_replace_line(/^basedir/, "basedir=#{node[:db_mysql][:tokutek][:base_dir]}")
+           nc.search_file_replace_line(/^datadir/, "datadir=#{node[:db_mysql][datadir]}")
+           nc.write_file
+        end
+      end
+   elsif platform =~ /ubuntu/
+     log "Do ubuntu stuff"
+   else
+     log "Unknown distro."
+   end
+
 
   #Hack for rightscale_tools for mysql
   if node[:db][:flavor] =~ /mariadb|tokudb/
