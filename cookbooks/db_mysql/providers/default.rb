@@ -683,7 +683,7 @@ action :install_server do
            require 'chef/util/file_edit'
            nc = Chef::Util::FileEdit.new("/etc/init.d/mysql")
            nc.search_file_replace_line(/^basedir/, "basedir=#{node[:db_mysql][:tokutek][:base_dir]}")
-           nc.search_file_replace_line(/^datadir/, "datadir=#{node[:db_mysql][datadir]}")
+           nc.search_file_replace_line(/^datadir/, "datadir=#{node[:db_mysql][:datadir]}")
            nc.write_file
         end
       end
