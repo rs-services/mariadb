@@ -647,8 +647,10 @@ action :install_server do
   end
 
   # Specific CentOs configs:
-  if platform =~ /redhat|centos/ && node[:db_mysql][:flavor] == "tokudb"
+  log "Platform: #{platform}, flavor: #{node[:db_mysql][:flavor]}"
+  if platform =~ /redhat|centos/
      ruby_block "Change init" do
+        only_if { node[:db_mysql][:flavor] =~ /tokudb/ }
         Chef::Log.info "Changing /etc/init.d/mysql for TokuDB"
         block do
            require 'chef/util/file_edit'
@@ -658,6 +660,10 @@ action :install_server do
            nc.write_file
         end
       end
+   elsif platform =~ /ubuntu/
+     log "Do ubuntu stuff"
+   else
+     log "Unknown distro."
    end
 
   # Specific configs for ubuntu:
