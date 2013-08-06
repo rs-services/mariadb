@@ -649,18 +649,43 @@ action :install_server do
   # Specific configs for ubuntu:
   # * sets config file localhost access w/ root and no password
   # * disables the 'check_for_crashed_tables'.
-  cookbook_file "/etc/mysql/debian.cnf" do
-    only_if { platform == "ubuntu" }
-    mode "0600"
-    source "debian.cnf"
-    cookbook "db_mysql"
-  end
 
-  cookbook_file "/etc/mysql/debian-start" do
-    only_if { platform == "ubuntu" }
-    mode "0755"
-    source "debian-start"
-    cookbook "db_mysql"
+  case node[:db][:flavor]
+   when "tokudb"
+      template "/etc/mysql/debian-start" do
+         only_if { platform == "ubuntu" }
+         mode "0755"
+         source "debian-start.erb"
+         variables(
+            :basedir => node[:db_mysql][:tokutek][:base_dir]
+         )
+         cookbook "db_mysql"
+      end
+      template "/etc/mysql/debian.cnf" do
+         only_if { platform == "ubuntu" }
+         mode "0600"
+         source "debian.cnf.erb"
+         cookbook "db_mysql"
+         variables(
+            :basedir => node[:db_mysql][:tokutek][:base_dir]
+         )
+       end
+
+
+   else
+     cookbook_file "/etc/mysql/debian.cnf" do
+       only_if { platform == "ubuntu" }
+       mode "0600"
+       source "debian.cnf"
+       cookbook "db_mysql"
+     end
+     cookbook_file "/etc/mysql/debian-start" do
+       only_if { platform == "ubuntu" }
+       mode "0755"
+       source "debian-start"
+       cookbook "db_mysql"
+     end
+
   end
 
   # Fixes permissions: during the first startup after installation some of the
