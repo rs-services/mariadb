@@ -720,9 +720,9 @@ action :install_server do
         block do
            require 'chef/util/file_edit'
            nc = Chef::Util::FileEdit.new("/etc/init.d/mysql")
-           nc.search_file_replace_line(/\/usr\/sbin\/mysqld/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqld")
-           nc.search_file_replace_line(/\/usr\/bin\/mysqld_safe/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqld_safe")
-           nc.search_file_replace_line(/\/usr\/bin\/mysqladmin/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqladmin")
+           nc.search_file_replace(/\/usr\/sbin\/mysqld/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqld")
+           nc.search_file_replace(/\/usr\/bin\/mysqld_safe/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqld_safe")
+           nc.search_file_replace(/\/usr\/bin\/mysqladmin/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqladmin")
            nc.write_file
         end
        end
