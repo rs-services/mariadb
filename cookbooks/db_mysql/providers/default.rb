@@ -698,7 +698,7 @@ action :install_server do
     EOH
   end
 
-  # Specific CentOs configs:
+  # Specific platform configs:
   log "Platform: #{platform}, flavor: #{node[:db][:flavor]}"
   if platform =~ /redhat|centos/
      ruby_block "Change init" do
@@ -714,6 +714,18 @@ action :install_server do
       end
    elsif platform =~ /ubuntu/
      log "Do ubuntu stuff"
+     ruby_block "Change init" do
+        only_if { node[:db][:flavor] =~ /tokudb/ }
+        Chef::Log.info "Changing /etc/init.d/mysql for TokuDB"
+        block do
+           require 'chef/util/file_edit'
+           nc = Chef::Util::FileEdit.new("/etc/init.d/mysql")
+           nc.search_file_replace_line(/\/usr\/sbin\/mysqld/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqld")
+           nc.search_file_replace_line(/\/usr\/bin\/mysqld_safe/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqld_safe")
+           nc.search_file_replace_line(/\/usr\/bin\/mysqladmin/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqladmin")
+           nc.write_file
+        end
+       end
    else
      log "Unknown distro."
    end
