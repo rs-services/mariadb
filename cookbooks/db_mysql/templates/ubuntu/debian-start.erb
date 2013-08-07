@@ -17,7 +17,7 @@
 # Changes to this file will be preserved when updating the Debian package.
 #
 
-source <%= @basedir %>/share/mysql/debian-start.inc.sh
+source /share/mysql/debian-start.inc.sh
 
 MYSQL="<%= @basedir %>/bin/mysql --defaults-file=/etc/mysql/debian.cnf"
 MYADMIN="<%= @basedir %>/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf"
