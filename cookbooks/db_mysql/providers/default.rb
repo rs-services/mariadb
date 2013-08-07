@@ -701,8 +701,8 @@ action :install_server do
   # Specific platform configs:
   log "Platform: #{platform}, flavor: #{node[:db][:flavor]}"
   if platform =~ /redhat|centos/
-     ruby_block "Change init" do
-        only_if { node[:db][:flavor] =~ /tokudb/ }
+     ruby_block "Change init for #{platform}" do
+        only_if { node[:db][:flavor] == "tokudb" }
         Chef::Log.info "Changing /etc/init.d/mysql for TokuDB"
         block do
            require 'chef/util/file_edit'
@@ -714,8 +714,8 @@ action :install_server do
       end
    elsif platform =~ /ubuntu/
      log "Do ubuntu stuff"
-     ruby_block "Change init" do
-        only_if { node[:db][:flavor] =~ /tokudb/ }
+     ruby_block "Change init for ubuntu" do
+        only_if { node[:db][:flavor] == "tokudb" }
         Chef::Log.info "Changing /etc/init.d/mysql for TokuDB"
         block do
            require 'chef/util/file_edit'
@@ -723,6 +723,8 @@ action :install_server do
            nc.search_file_replace(/\/usr\/sbin\/mysqld/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqld")
            nc.search_file_replace(/\/usr\/bin\/mysqld_safe/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqld_safe")
            nc.search_file_replace(/\/usr\/bin\/mysqladmin/, "#{node[:db_mysql][:tokutek][:base_dir]}\/bin\/mysqladmin")
+           nc.insert_line_after_match(/^set -u$/, "export MY_BASEDIR_VERSION=\"#{node[:db_mysql][:tokutek][:base_dir]}\"")
+	   nc.insert_line_after_match(/^export MY_BASEDIR_VERSION/, "export PLUGIN_DIR=\"#{node[:db_mysql][:tokutek][:base_dir]}\/lib\/plugin\"")
            nc.write_file
         end
        end
