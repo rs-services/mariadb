@@ -87,9 +87,10 @@ attribute "db_mysql/tmpdir",
   :display_name => "MySQL Temp Directory Destination",
   :description =>
     "Defines the location of your MySQL temp directory." +
-    " Sets the 'tmpdir' variable in the MySQL config file. Example: /tmp",
+    " Sets the 'tmpdir' variable in the MySQL config file. Example: /mnt/ephemeral/tmp" +
+    " This is especially important for TokuDB as it's used for background compression and should be on a large, fast, volume.",
   :required => "optional",
-  :default => "/mnt/ephemeral/mysqltmp",
+  :default => "/mnt/ephemeral/tmp",
   :recipes => [
     "db_mysql::setup_maria_5_2",
     "db_mysql::setup_maria_10_0",
@@ -122,6 +123,13 @@ attribute "db_mysql/tunable/expire_logs_days",
     "db_mysql::setup_maria_5_5",
     "db_mysql::setup_toku_5_5"
   ]
+
+attribute "db_mysql/tunable/tokudb_lock_timeout",
+  :display_name => "TokuDB Lock Timeout",
+  :description => "TokuDB lock timeout.  Applicable only to TokuDB.  Default: 20000",
+  :required => "optional",
+  :default => "20000",
+  :recipes => [ "db_mysql::setup_toku_5_5" ]
 
 attribute "db_mysql/tunable/innodb_extra_undoslots",
   :display_name => "MariaDB extra undo slots",

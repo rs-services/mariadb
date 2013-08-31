@@ -142,9 +142,10 @@ innodb_stats_update_need_lock = 0
 
 <% if node[:db][:flavor] == "tokudb" %>
 ##TokuDB
+tokudb_cache_size = <%= node[:db_mysql][:tunable][:tokudb_cache_size] %>
 tokudb_data_dir = <%= node[:db_mysql][:datadir] %>
 tokudb_tmp_dir = <%= node[:db_mysql][:tmpdir] %>
-tokudb_lock_timeout = 20000
+tokudb_lock_timeout = <%= node[:db_mysql][:tunable][:tokudb_lock_timeout] %>
 tokudb_row_format = <%= node[:db_mysql][:tunable][:tokudb_row_format] %>
 <% end %>
 
