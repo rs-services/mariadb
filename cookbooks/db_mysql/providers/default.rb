@@ -216,7 +216,6 @@ action :post_restore_cleanup do
   # See cookbooks/db_mysql/libraries/helper.rb
   # for the "RightScale::Database::MySQL::Helper" class.
   db_mysql_set_mycnf "setup_mycnf" do
-    flavor node[:db_mysql][:flavor]
     server_id RightScale::Database::MySQL::Helper.mycnf_uuid(node)
     relay_log RightScale::Database::MySQL::Helper.mycnf_relay_log(node)
     innodb_log_file_size ::File.stat("/var/lib/mysql/ib_logfile0").size
@@ -608,7 +607,6 @@ action :install_server do
   # See cookbooks/db_mysql/libraries/helper.rb
   # for the "RightScale::Database::MySQL::Helper" class.
   db_mysql_set_mycnf "setup_mycnf" do
-    flavor node[:db_mysql][:flavor]
     server_id RightScale::Database::MySQL::Helper.mycnf_uuid(node)
     relay_log RightScale::Database::MySQL::Helper.mycnf_relay_log(node)
     innodb_log_file_size ::File.size?("/var/lib/mysql/ib_logfile0")
@@ -922,7 +920,6 @@ action :promote do
   # See cookbooks/db_mysql/libraries/helper.rb
   # for the "RightScale::Database::MySQL::Helper" class.
   db_mysql_set_mycnf "setup_mycnf" do
-    flavor node[:db_mysql][:flavor]
     server_id RightScale::Database::MySQL::Helper.mycnf_uuid(node)
     relay_log RightScale::Database::MySQL::Helper.mycnf_relay_log(node)
     innodb_log_file_size ::File.stat("/var/lib/mysql/ib_logfile0").size
@@ -1157,7 +1154,6 @@ action :enable_replication do
     # See cookbooks/db_mysql/libraries/helper.rb
     # for the "RightScale::Database::MySQL::Helper" class.
     db_mysql_set_mycnf "setup_mycnf" do
-      flavor node[:db_mysql][:flavor]
       server_id RightScale::Database::MySQL::Helper.mycnf_uuid(node)
       relay_log RightScale::Database::MySQL::Helper.mycnf_relay_log(node)
       innodb_log_file_size ::File.stat("/var/lib/mysql/ib_logfile0").size

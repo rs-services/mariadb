@@ -7,7 +7,6 @@
 # such as a RightScale Master Subscription Agreement.
 
 define :db_mysql_set_mycnf,
-  :flavor => nil,
   :server_id => nil,
   :relay_log => nil,
   :innodb_extra_undoslots => nil,
@@ -27,9 +26,9 @@ define :db_mysql_set_mycnf,
   #
   # Shared servers get 50% of the resources allocated to a dedicated server.
 
-  log "Configuring my.cnf for '#{flavor}' flavor"
+  log "Configuring my.cnf for '#{node[:db][:flavor]}' node[:db][:flavor]"
 
-  case flavor
+  case node[:db][:flavor]
   when "tokudb"
      log "We're tuning for TokuDB"
      usage = node[:db_mysql][:server_usage] == "shared" ? 0.01 : 0.5
@@ -45,7 +44,7 @@ define :db_mysql_set_mycnf,
   log "  Auto-tuning MySQL parameters. Total memory: #{mem}MB"
 
 
-  case flavor
+  case node[:db][:flavor]
   when "tokudb"
      node[:db_mysql][:tunable][:query_cache_size] ||= value_with_units((mem * 0.01).to_i, "M", usage)
      log "  Setting query_cache_size to: #{node[:db_mysql][:tunable][:query_cache_size]}"
@@ -129,7 +128,7 @@ define :db_mysql_set_mycnf,
   # 10GB - 25GB
   # 25GB - 50GB
   # >50GB
-  if mem < 3 * GB && flavor != "tokudb"
+  if mem < 3 * GB && node[:db][:flavor] != "tokudb"
     node[:db_mysql][:tunable][:table_cache] ||= (256 * usage).to_i
     node[:db_mysql][:tunable][:sort_buffer_size] ||=
       value_with_units(2, "M", usage)
@@ -137,7 +136,7 @@ define :db_mysql_set_mycnf,
       value_with_units(50, "M", usage)
     node[:db_mysql][:tunable][:myisam_sort_buffer_size] ||=
       value_with_units(64, "M", usage)
-  elsif mem < 10 * GB && flavor != "tokudb"
+  elsif mem < 10 * GB && node[:db][:flavor] != "tokudb"
     node[:db_mysql][:tunable][:table_cache] ||= (512 * usage).to_i
     node[:db_mysql][:tunable][:sort_buffer_size] ||=
       value_with_units(4, "M", usage)
@@ -145,7 +144,7 @@ define :db_mysql_set_mycnf,
       value_with_units(200, "M", usage)
     node[:db_mysql][:tunable][:myisam_sort_buffer_size] ||=
       value_with_units(96, "M", usage)
-  elsif mem < 25 * GB && flavor != "tokudb"
+  elsif mem < 25 * GB && node[:db][:flavor] != "tokudb"
     node[:db_mysql][:tunable][:table_cache] ||= (1024 * usage).to_i
     node[:db_mysql][:tunable][:sort_buffer_size] ||=
       value_with_units(8, "M", usage)
@@ -153,7 +152,7 @@ define :db_mysql_set_mycnf,
       value_with_units(300, "M", usage)
     node[:db_mysql][:tunable][:myisam_sort_buffer_size] ||=
       value_with_units(128, "M", usage)
-  elsif mem < 50 * GB && flavor != "tokudb"
+  elsif mem < 50 * GB && node[:db][:flavor] != "tokudb"
     node[:db_mysql][:tunable][:table_cache] ||= (2048 * usage).to_i
     node[:db_mysql][:tunable][:sort_buffer_size] ||=
       value_with_units(16, "M", usage)
