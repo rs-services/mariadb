@@ -27,11 +27,11 @@ define :db_mysql_set_mycnf,
   # Shared servers get 50% of the resources allocated to a dedicated server.
 
   case node[:db_mysql][:flavor]
-     when "tokudb"
-        usage = node[:db_mysql][:server_usage] == "shared" ? 0.01 : 0.5
-     else
-        usage = node[:db_mysql][:server_usage] == "shared" ? 0.5 : 1
-  done
+  when "tokudb"
+     usage = node[:db_mysql][:server_usage] == "shared" ? 0.01 : 0.5
+  else
+     usage = node[:db_mysql][:server_usage] == "shared" ? 0.5 : 1
+  end
 
   # We are working with MB. Set GB so X * GB can be used in conditional.
   GB = 1024
@@ -41,22 +41,22 @@ define :db_mysql_set_mycnf,
 
 
   case node[:db_mysql][:flavor]
-     when "tokudb"
-       node[:db_mysql][:tunable][:query_cache_size] ||= value_with_units((mem * 0.01).to_i, "M", usage)
-          log "  Setting query_cache_size to: #{node[:db_mysql][:tunable][:query_cache_size]}"
+  when "tokudb"
+     node[:db_mysql][:tunable][:query_cache_size] ||= value_with_units((mem * 0.01).to_i, "M", usage)
+     log "  Setting query_cache_size to: #{node[:db_mysql][:tunable][:query_cache_size]}"
 
-        node[:db_mysql][:tunable][:innodb_buffer_pool_size] ||= value_with_units((mem * 0.2).to_i, "K", usage)
-           log "TokuDB only need InnoDB for conversions, using KB instead of MB."
-           log "  Setting innodb_buffer_pool_size to: #{node[:db_mysql][:tunable][:innodb_buffer_pool_size]}"
+     node[:db_mysql][:tunable][:innodb_buffer_pool_size] ||= value_with_units((mem * 0.2).to_i, "K", usage)
+     log "TokuDB only need InnoDB for conversions, using KB instead of MB."
+     log "  Setting innodb_buffer_pool_size to: #{node[:db_mysql][:tunable][:innodb_buffer_pool_size]}"
 
-        node[:db_mysql][:tunable][:tokudb_cache_size] ||= value_with_units((mem * 0.8).to_i, "M", usage)
-           log "Setting tokudb_cache_size to #{node[:db_mysql][:tunable][:tokudb_cache_size]}"
-     else
-        node[:db_mysql][:tunable][:query_cache_size] ||= value_with_units((mem * 0.01).to_i, "M", usage)
-           log "  Setting query_cache_size to: #{node[:db_mysql][:tunable][:query_cache_size]}"
+     node[:db_mysql][:tunable][:tokudb_cache_size] ||= value_with_units((mem * 0.8).to_i, "M", usage)
+     log "Setting tokudb_cache_size to #{node[:db_mysql][:tunable][:tokudb_cache_size]}"
+  else
+     node[:db_mysql][:tunable][:query_cache_size] ||= value_with_units((mem * 0.01).to_i, "M", usage)
+     log "  Setting query_cache_size to: #{node[:db_mysql][:tunable][:query_cache_size]}"
 
-        node[:db_mysql][:tunable][:innodb_buffer_pool_size] ||= value_with_units((mem * 0.8).to_i, "M", usage)
-           log "  Setting innodb_buffer_pool_size to: #{node[:db_mysql][:tunable][:innodb_buffer_pool_size]}"
+     node[:db_mysql][:tunable][:innodb_buffer_pool_size] ||= value_with_units((mem * 0.8).to_i, "M", usage)
+     log "  Setting innodb_buffer_pool_size to: #{node[:db_mysql][:tunable][:innodb_buffer_pool_size]}"
   end
 
   # Fixed parameters, common value for all instance sizes
@@ -84,7 +84,7 @@ define :db_mysql_set_mycnf,
 
   # Sets the buffer sizes and InnoDB log properties.
   # Overrides buffer sizes for really small servers.
-  if mem < 1 * GB || node[:db_mysql][:flavor] == "tokudb"
+  if mem < 1 * GB
     node[:db_mysql][:tunable][:key_buffer] ||=
       value_with_units(16, "M", usage)
     node[:db_mysql][:tunable][:isamchk][:key_buffer] ||=
