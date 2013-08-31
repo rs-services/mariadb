@@ -26,12 +26,12 @@ define :db_mysql_set_mycnf,
   #
   # Shared servers get 50% of the resources allocated to a dedicated server.
 
-  log "Configuring my.cnf for '#{node[:db][:flavor]}' node[:db][:flavor]"
+  log "Configuring my.cnf for '#{node[:db][:flavor]}'"
 
   case node[:db][:flavor]
   when "tokudb"
      log "We're tuning for TokuDB"
-     usage = node[:db_mysql][:server_usage] == "shared" ? 0.01 : 0.5
+     usage = node[:db_mysql][:server_usage] == "shared" ? 0.02 : 0.5
   else
      log "We're tuning for MySQL"
      usage = node[:db_mysql][:server_usage] == "shared" ? 0.5 : 1
@@ -40,7 +40,7 @@ define :db_mysql_set_mycnf,
   # We are working with MB. Set GB so X * GB can be used in conditional.
   GB = 1024
   # Converts memory from kB to MB.
-  mem = node[:memory][:total].to_i / 1024
+  mem = node[:memory][:total].to_i / GB
   log "  Auto-tuning MySQL parameters. Total memory: #{mem}MB"
 
 
@@ -50,7 +50,7 @@ define :db_mysql_set_mycnf,
      log "  Setting query_cache_size to: #{node[:db_mysql][:tunable][:query_cache_size]}"
 
      node[:db_mysql][:tunable][:innodb_buffer_pool_size] ||= value_with_units((mem * 0.2).to_i, "K", usage)
-     log "TokuDB only need InnoDB for conversions, using KB instead of MB."
+     log "TokuDB only needs InnoDB for conversions, using KB instead of MB."
      log "  Setting innodb_buffer_pool_size to: #{node[:db_mysql][:tunable][:innodb_buffer_pool_size]}"
 
      node[:db_mysql][:tunable][:tokudb_cache_size] ||= value_with_units((mem * 0.8).to_i, "M", usage)
