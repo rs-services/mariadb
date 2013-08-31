@@ -26,10 +26,14 @@ define :db_mysql_set_mycnf,
   #
   # Shared servers get 50% of the resources allocated to a dedicated server.
 
+  log "Configuring my.cnf for '#{node[:db_mysql][:flavor]}' flavor"
+
   case node[:db_mysql][:flavor]
   when "tokudb"
+     log "We're tuning for TokuDB"
      usage = node[:db_mysql][:server_usage] == "shared" ? 0.01 : 0.5
   else
+     log "We're tuning for MySQL"
      usage = node[:db_mysql][:server_usage] == "shared" ? 0.5 : 1
   end
 
@@ -161,9 +165,9 @@ define :db_mysql_set_mycnf,
     node[:db_mysql][:tunable][:sort_buffer_size] ||=
       value_with_units(32, "M", usage)
     node[:db_mysql][:tunable][:innodb_additional_mem_pool_size] ||=
-      value_with_units(500, "M", usage)
+      value_with_units(500, "K", usage)
     node[:db_mysql][:tunable][:myisam_sort_buffer_size] ||=
-      value_with_units(512, "M", usage)
+      value_with_units(512, "K", usage)
   end
 
   log "  Installing my.cnf with server_id = #{params[:server_id]}," +
