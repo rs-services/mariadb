@@ -319,5 +319,5 @@
     "db_mysql::setup_toku_5_5": "Sets the DB MySQL provider. Sets version 5.5 and node variables specific to MariaDB (TokuDB) 5.5.",
     "db_mysql::setup_maria_5_2": "Sets the DB MySQL provider. Sets version 5.2 and node variables specific to OurDelta build of MariaDB 5.2. - Experimental and not for production use."
   },
-  "version": "13.4.1"
+  "version": "13.4.2"
 }
