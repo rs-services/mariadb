@@ -41,11 +41,11 @@ pversion = node['platform_version'].split('.').first
      yum_repository "MariaDB" do
        repo_name "MariaDB"
        description "MariaDB"
-       url "http://yum.mariadb.org/5.5/#{node['platform']}#{pversion}-#{arch}"
+       url "http://yum.mariadb.org/5.5/#{node[platform_family]}#{pversion}-#{arch}"
        key "RPM-GPG-KEY-MariaDB"
        action :add
      end
-     log "Installed repo for #{node[:platform]}"
+     log "Installed repo for #{node[:platform]}, #{node[platform_family]}"
 
   when "ubuntu", "debian"
        package "python-software-properties" do
