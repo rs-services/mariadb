@@ -8,12 +8,12 @@
 
 rightscale_marker
 
-version = "5.5"
-node[:db][:version] = version
+maria_version = "5.5"
+node[:db][:version] = maria_version
 node[:db][:flavor] = "tokudb"
 node[:db][:provider] = "db_mysql"
 
-log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
+log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{node[:db][:version]}"
 log "We setup MariaDB 5.5 first to get all MariaDB dependencies via yum."
 
 arch = case node['kernel']['machine']
@@ -41,11 +41,11 @@ pversion = node['platform_version'].split('.').first
      yum_repository "MariaDB" do
        repo_name "MariaDB"
        description "MariaDB"
-       url "http://yum.mariadb.org/5.5/#{node[platform_family]}#{pversion}-#{arch}"
+       url "http://yum.mariadb.org/5.5/#{platform_family}#{pversion}-#{arch}"
        key "RPM-GPG-KEY-MariaDB"
        action :add
      end
-     log "Installed repo for #{node[:platform]}, #{node[platform_family]}"
+     log "Installed repo for #{node[:platform]}, #{platform_family}"
 
   when "ubuntu", "debian"
        package "python-software-properties" do
