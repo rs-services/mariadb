@@ -181,6 +181,20 @@ attribute "db",
   :display_name => "General Database Options",
   :type => "hash"
 
+attribute "db/flavor",
+  :display_name => "Database Flavor",
+  :description =>
+    "Flavor targets the main engine used within MariaDB.  All other engines remain enabled, but are setup with minimum values," +
+    "while the lion's share of memory and resources is used by the primary engine.  Primary engines: " +
+    " mariadb: XtraDB, tokudb: TokuDB",
+  :required => "optional",
+  :choice => [
+    "mariadb",
+    "tokudb"
+  ],
+  :recipes => ["db::default", "db::install_server"]
+  
+
 attribute "db/dns/master/fqdn",
   :display_name => "Database Master FQDN",
   :description =>

@@ -37,6 +37,21 @@
 
       ]
     },
+    "db/flavor": {
+      "display_name": "Database Flavor",
+      "description": "Flavor targets the main engine used within MariaDB.  All other engines remain enabled, but are setup with minimum values,while the lion's share of memory and resources is used by the primary engine.  Primary engines:  mariadb: XtraDB, tokudb: TokuDB",
+      "required": "optional",
+      "choice": [
+        "mariadb",
+        "tokudb"
+      ],
+      "recipes": [
+        "db::default",
+        "db::install_server"
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "db/dns/master/fqdn": {
       "display_name": "Database Master FQDN",
       "description": "The fully qualified domain name for the master database server. Example: db-master.example.com",

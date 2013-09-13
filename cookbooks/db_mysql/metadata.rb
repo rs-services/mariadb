@@ -52,6 +52,13 @@ attribute "db_mysql/server_usage",
     "db_mysql::setup_toku_5_5"
   ]
 
+attribute "db_mysql/tokudb_enterprise",
+  :display_name => "TokuDB Enterprise License",
+  :description => "Include the contents of the TokuDB Enterprise license here." +
+  " This will install TokuDB Enterprise, not the OSS version.",
+  :required => "optional",
+  :recipes => [ "db_mysql::setup_toku_5_5" ]
+
 attribute "db_mysql/log_bin",
   :display_name => "MySQL Binlog Destination",
   :description =>

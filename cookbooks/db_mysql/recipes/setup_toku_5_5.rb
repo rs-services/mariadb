@@ -16,11 +16,19 @@ node[:db][:provider] = "db_mysql"
 log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{version}"
 log "We setup MariaDB 5.5 first to get all MariaDB dependencies via yum."
 
-if node[:db][:flavor] =~ /mariadb|tokudb/
+arch = case node['kernel']['machine']
+       when "x86_64" then "amd64"
+       when "amd64" then "amd64"
+       else "x86"
+       end
+
+pversion = node['platform_version'].split('.').first
+
     log "Installing MariaDB repo for #{node[:platform]}..."
     #MariaDB repo
 
-  if node[:platform] =~ /centos/
+  case node[:platform]
+  when "centos", "redhat"
      package "yum-plugin-fastestmirror" do
        action :install
      end
@@ -33,44 +41,16 @@ if node[:db][:flavor] =~ /mariadb|tokudb/
      yum_repository "MariaDB" do
        repo_name "MariaDB"
        description "MariaDB"
-       url "http://yum.mariadb.org/5.5/centos#{node[:platform_version].to_i}-amd64"
+       url "http://yum.mariadb.org/5.5/#{node['platform']}#{pversion}-#{arch}"
        key "RPM-GPG-KEY-MariaDB"
        action :add
      end
      log "Installed repo for #{node[:platform]}"
-  end
 
-
-  if node[:platform] =~ /redhat/
-     package "yum-plugin-fastestmirror" do
-       action :install
-     end
-
-     yum_key "RPM-GPG-KEY-MariaDB" do
-       url "https://yum.mariadb.org/RPM-GPG-KEY-MariaDB"
-       action :add
-     end
-
-     yum_repository "MariaDB" do
-       repo_name "MariaDB"
-       description "MariaDB"
-       url "http://yum.mariadb.org/5.5/rhel#{node[:platform_version].to_i}-amd64"
-       key "RPM-GPG-KEY-MariaDB"
-       action :add
-     end
-  
-  end
-
-  if node[:platform] =~ /ubuntu|debian/
-
-       if node[:db][:flavor] =~ /mariadb|tokudb/
-          log "Installing MariaDB repo for #{node[:platform]}..."
-          #MariaDB repo
-          
-          package "python-software-properties" do
-             action :install
-          end
-
+  when "ubuntu", "debian"
+       package "python-software-properties" do
+          action :install
+       end
 
        apt_repository "MariaDB" do
           uri "http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu"
@@ -79,15 +59,9 @@ if node[:db][:flavor] =~ /mariadb|tokudb/
           keyserver "keyserver.ubuntu.com"
           key "1BB943DB"
        end
-
+       log "Installed repo for #{node[:platform]}"
   end
 
-
-  else
-      log "No extra repo needed for #{node[:db][:flavor]}."
-  end
-
-end
 
 # Set MySQL 5.5 specific node variables in this recipe.
 #
@@ -132,8 +106,16 @@ log "Set #{node[:db_mysql][:server_packages_install]}."
 
 log "MariaDB is installed without the server package.  Proceeding with TokuDB."
 
-     remote_file "#{Chef::Config[:file_cache_path]}/#{node[:db_mysql][:tokutek][:version]}.tar.gz" do
-         source "http://rs-professional-services-publishing.s3.amazonaws.com/tokudb/#{node[:db_mysql][:tokutek][:version]}.tar.gz"
+     if node[:db_mysql][:tokudb_enterprise].nil?
+        toku_package = "http://rs-professional-services-publishing.s3.amazonaws.com/tokudb/#{node[:db_mysql][:tokudb][:version]}.tar.gz"
+        toku_version = node[:db_mysql][:tokudb][:version]
+     else
+        toku_package = "http://rs-professional-services-publishing.s3.amazonaws.com/tokudb/#{node[:db_mysql][:tokudb][:enterprise_version]}.tar.gz"
+        toku_version = node[:db_mysql][:tokudb][:enterprise_version]
+    end
+
+     remote_file "#{Chef::Config[:file_cache_path]}/tokudb.tar.gz" do
+         source "#{toku_package}"
          mode "0755"
          backup false
          action :create_if_missing
@@ -142,14 +124,14 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
      bash 'extract_tar' do
         cwd "#{Chef::Config[:file_cache_path]}"
         code <<-EOH
-           mkdir -p #{node[:db_mysql][:tokutek][:install_path]}
-           tar xzf #{Chef::Config[:file_cache_path]}/#{node[:db_mysql][:tokutek][:version]}.tar.gz -C #{node[:db_mysql][:tokutek][:install_path]}
+           mkdir -p #{node[:db_mysql][:tokudb][:install_path]}
+           tar xzf #{Chef::Config[:file_cache_path]}/tokudb.tar.gz -C #{node[:db_mysql][:tokudb][:install_path]}
         EOH
-      not_if { ::File.exists?(node[:db_mysql][:tokutek][:install_path]) }
+      not_if { ::File.exists?(node[:db_mysql][:tokudb][:install_path]) }
      end
 
-     link "#{node[:db_mysql][:tokutek][:base_dir]}" do
-        to "#{node[:db_mysql][:tokutek][:install_path]}/#{node[:db_mysql][:tokutek][:version]}"
+     link "#{node[:db_mysql][:tokudb][:base_dir]}" do
+        to "#{node[:db_mysql][:tokudb][:install_path]}/#{toku_version}"
      end
 
     group "mysql" do
@@ -159,20 +141,20 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
 
     user "mysql" do
        name "MariaDB"
-       comment "#{node[:db_mysql][:tokutek][:version]}"
+       comment "#{toku_version}"
        uid 927
        gid "mysql"
        system true
        action :create
     end
 
-    directory "#{node[:db_mysql][:tokutek][:base_dir]}" do
+    directory "#{node[:db_mysql][:tokudb][:base_dir]}" do
         owner "mysql"
         group "mysql"
         recursive true
     end
 
-   remote_file "#{node[:db_mysql][:tokutek][:base_dir]}/scripts/mysql_convert_table_format" do
+   remote_file "#{node[:db_mysql][:tokudb][:base_dir]}/scripts/mysql_convert_table_format" do
       source "https://raw.github.com/azilber/mariadb/45f81eba12283e58717ab2b3de02b9e2054ee2ec/scripts/mysql_convert_table_format.sh"  
       mode "0755"
       backup false

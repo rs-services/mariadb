@@ -12,8 +12,8 @@ default[:db][:dns][:master][:fqdn] = "localhost"
 # Initial settings for client operations on application servers
 default[:db][:data_dir] = "/mnt/storage"
 
-# Init flavor
-default[:db][:flavor] = ""
+#Main Flavor of Database: mariadb = XtraDB/InnoDB, tokudb = TokuDB, etc.
+default[:db][:flavor] = "mariadb"
 
 # Default settings for database administrator user and password
 default[:db][:admin][:user] = "root"
