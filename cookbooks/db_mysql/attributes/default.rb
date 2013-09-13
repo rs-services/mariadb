@@ -11,7 +11,8 @@
 default[:db_mysql][:collectd_master_slave_mode] = ""
 # TokuDB specifics
 default[:db_mysql][:tokudb][:version] = "mariadb-5.5.30-tokudb-7.0.4-linux-x86_64"
-default[:db_mysql][:tokudb][:enterprise] = "mariadb-5.5.30-tokudb-7.0.4-e-linux-x86_64"
+default[:db_mysql][:tokudb][:enterprise_version] = "mariadb-5.5.30-tokudb-7.0.4-e-linux-x86_64"
+default[:db_mysql][:tokudb_enterprise] = nil
 default[:db_mysql][:tokudb][:install_path] = "/opt/tokudb"
 default[:db_mysql][:tunable][:tokudb_cache_size] = nil
 default[:db_mysql][:tunable][:tokudb_lock_timeout] = "20000"
