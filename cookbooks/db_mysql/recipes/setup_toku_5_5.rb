@@ -106,7 +106,7 @@ log "Set #{node[:db_mysql][:server_packages_install]}."
 
 log "MariaDB is installed without the server package.  Proceeding with TokuDB."
 
-     if node[:db_mysql][:tokudb_enterprise].nil?
+     if node[:db_mysql][:tokudb_enterprise] =~ /Yes/
         toku_package = "http://rs-professional-services-publishing.s3.amazonaws.com/tokudb/#{node[:db_mysql][:tokudb][:version]}.tar.gz"
         toku_version = node[:db_mysql][:tokudb][:version]
      else
