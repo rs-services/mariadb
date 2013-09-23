@@ -106,13 +106,9 @@ log "Set #{node[:db_mysql][:server_packages_install]}."
 
 log "MariaDB is installed without the server package.  Proceeding with TokuDB."
 
-     if node[:db_mysql][:tokudb_enterprise] =~ /Yes/
-        toku_package = "http://rs-professional-services-publishing.s3.amazonaws.com/tokudb/#{node[:db_mysql][:tokudb][:version]}.tar.gz"
-        toku_version = node[:db_mysql][:tokudb][:version]
-     else
-        toku_package = "http://rs-professional-services-publishing.s3.amazonaws.com/tokudb/#{node[:db_mysql][:tokudb][:enterprise_version]}.tar.gz"
-        toku_version = node[:db_mysql][:tokudb][:enterprise_version]
-    end
+     node[:db_mysql][:tokudb][:version]=node[:db_mysql][:tokudb_url].split('/').last.split('.tar.gz').first
+     toku_package = node[:db_mysql][:tokudb_url]
+     toku_version = node[:db_mysql][:tokudb][:version]
 
      remote_file "#{Chef::Config[:file_cache_path]}/tokudb.tar.gz" do
          source "#{toku_package}"

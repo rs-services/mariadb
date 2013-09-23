@@ -52,12 +52,10 @@ attribute "db_mysql/server_usage",
     "db_mysql::setup_toku_5_5"
   ]
 
-attribute "db_mysql/tokudb_enterprise",
-  :display_name => "Install TokuDB Enterprise",
-  :description => "Installs TokuDB Enterprise instead of OSS version.",
-  :required => "optional",
-  :choice => ["Yes", "No"],
-  :default => "Yes",
+attribute "db_mysql/tokudb_url",
+  :display_name => "TokuDB package url",
+  :description => "Downloads and Installs TokuDB remote package.",
+  :required => "required",
   :recipes => [ "db_mysql::setup_toku_5_5" ]
 
 attribute "db_mysql/log_bin",
