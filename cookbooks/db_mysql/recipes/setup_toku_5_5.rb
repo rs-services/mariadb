@@ -126,6 +126,12 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
       not_if { ::File.exists?(node[:db_mysql][:tokudb][:install_path]) }
      end
 
+
+    execute "chown -Rf #{node[:db_mysql][:tokudb][:install_path]}/#{toku_version}" do
+        command "chown -Rf mysql.mysql #{node[:db_mysql][:tokudb][:install_path]}"
+        only_if { ::File.exists?(node[:db_mysql][:tokudb][:install_path]) }
+    end
+
      link "#{node[:db_mysql][:tokudb][:base_dir]}" do
         to "#{node[:db_mysql][:tokudb][:install_path]}/#{toku_version}"
      end
@@ -142,12 +148,6 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
        gid "mysql"
        system true
        action :create
-    end
-
-    directory "#{node[:db_mysql][:tokudb][:base_dir]}" do
-        owner "mysql"
-        group "mysql"
-        recursive true
     end
 
    remote_file "#{node[:db_mysql][:tokudb][:base_dir]}/scripts/mysql_convert_table_format" do
