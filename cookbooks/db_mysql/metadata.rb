@@ -16,18 +16,9 @@ depends "block_device"
 depends "sys_dns"
 depends "rightscale"
 
-recipe "db_mysql::setup_maria_10_0",
-  "Sets the DB MySQL provider. Sets version 10.0 and node variables specific" +
-  " to MariaDB 10.0. - Alpha/Beta - NOT FOR PRODUCTION USE"
-recipe "db_mysql::setup_maria_5_5",
-  "Sets the DB MySQL provider. Sets version 5.5 and node variables specific" +
-  " to MariaDB 5.5."
 recipe "db_mysql::setup_toku_5_5",
   "Sets the DB MySQL provider. Sets version 5.5 and node variables specific" +
   " to MariaDB (TokuDB) 5.5."
-recipe "db_mysql::setup_maria_5_2",
-  "Sets the DB MySQL provider. Sets version 5.2 and node variables specific" +
-  " to OurDelta build of MariaDB 5.2. - Experimental and not for production use."
 
 attribute "db_mysql",
   :display_name => "General Database Options",
@@ -54,7 +45,8 @@ attribute "db_mysql/server_usage",
 
 attribute "db_mysql/tokudb_url",
   :display_name => "TokuDB package url",
-  :description => "Downloads and Installs TokuDB remote package. You MUST maintain the original package filename as downloaded from TokuTek.",
+  :description => "Downloads and Installs TokuDB remote package. You MUST maintain the original package filename as downloaded from TokuTek." +
+     "This should be at a public url.",
   :required => "required",
   :recipes => [ "db_mysql::setup_toku_5_5" ]
 
