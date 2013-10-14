@@ -127,6 +127,14 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
       not_if { ::File.exists?(node[:db_mysql][:tokudb][:install_path]) }
      end
 
+    user "mysql" do
+       name "MariaDB"
+       comment "#{toku_version}"
+       uid 927
+       gid "mysql"
+       system true
+       action :create
+    end
 
     execute "chown -Rf #{node[:db_mysql][:tokudb][:install_path]}/#{toku_version}" do
         command "chown -Rf mysql.mysql #{node[:db_mysql][:tokudb][:install_path]}"
@@ -139,15 +147,6 @@ log "MariaDB is installed without the server package.  Proceeding with TokuDB."
 
     group "mysql" do
        gid 927
-       action :create
-    end
-
-    user "mysql" do
-       name "MariaDB"
-       comment "#{toku_version}"
-       uid 927
-       gid "mysql"
-       system true
        action :create
     end
 
