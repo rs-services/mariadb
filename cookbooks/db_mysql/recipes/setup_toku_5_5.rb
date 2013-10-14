@@ -104,7 +104,7 @@ node[:db_mysql][:server_packages_install] = value_for_platform(
 )
 log "Set #{node[:db_mysql][:server_packages_install]}."
 
-log "MariaDB is installed without the server package.  Proceeding with TokuDB."
+log "MariaDB is installed with the server package.  Proceeding with TokuDB."
 
 	#Try and clean up the url/file
      node[:db_mysql][:tokudb][:version]=node[:db_mysql][:tokudb_url].split('/').last.split('.tar.gz').first.first.split('%2F').last
