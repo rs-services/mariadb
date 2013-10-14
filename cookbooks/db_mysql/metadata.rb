@@ -46,7 +46,7 @@ attribute "db_mysql/server_usage",
 attribute "db_mysql/tokudb_url",
   :display_name => "TokuDB package url",
   :description => "Downloads and Installs TokuDB remote package. You MUST maintain the original package filename as downloaded from TokuTek." +
-     "This should be at a public url.",
+     "This should be at a public url. Keep the url clean, without url encoded strings (Except for %2F).",
   :required => "required",
   :recipes => [ "db_mysql::setup_toku_5_5" ]
 
