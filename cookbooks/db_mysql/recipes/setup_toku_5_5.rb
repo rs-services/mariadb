@@ -128,6 +128,12 @@ log "MariaDB is installed with the server package.  Proceeding with TokuDB."
       not_if { ::File.exists?(node[:db_mysql][:tokudb][:install_path]) }
      end
 
+
+    group "mysql" do
+       gid 927
+       action :create
+    end
+
     user "mysql" do
        name "MariaDB"
        comment "#{node[:db_mysql][:tokudb][:version]}"
@@ -145,11 +151,6 @@ log "MariaDB is installed with the server package.  Proceeding with TokuDB."
      link "#{node[:db_mysql][:tokudb][:base_dir]}" do
         to "#{node[:db_mysql][:tokudb][:install_path]}/#{node[:db_mysql][:tokudb][:version]}"
      end
-
-    group "mysql" do
-       gid 927
-       action :create
-    end
 
    log " Use mysql_convert_table_format.pl for Innodb -> TokuDB conversions"
    cookbook_file "#{node[:db_mysql][:tokudb][:base_dir]}/scripts/mysql_convert_table_format.pl" do
