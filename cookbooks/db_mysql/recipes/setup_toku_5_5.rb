@@ -54,6 +54,10 @@ pversion = node['platform_version'].split('.').first
           action :install
        end
 
+      package "libterm-readkey-perl" do
+          action :install
+      end
+
        apt_repository "MariaDB" do
           uri "http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu"
           distribution node['lsb']['codename']
