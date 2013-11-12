@@ -110,8 +110,7 @@ log "MariaDB is installed with the server package.  Proceeding with TokuDB."
 
      log "  Make sure to the original Tokutek filename is kept"
 
-     node[:db_mysql][:tokudb][:version]=File.basename(uri.URI.parse(node[:db_mysql][:tokudb_url])).split('.tar.gz').first
-     toku_version = node[:db_mysql][:tokudb][:version]
+     node[:db_mysql][:tokudb][:version]=File.basename(URI.parse(node[:db_mysql][:tokudb_url]).path).split('.tar.gz').first
 
      remote_file "#{Chef::Config[:file_cache_path]}/tokudb.tar.gz" do
          source "#{node[:db_mysql][:tokudb_url]}"
@@ -131,20 +130,20 @@ log "MariaDB is installed with the server package.  Proceeding with TokuDB."
 
     user "mysql" do
        name "MariaDB"
-       comment "#{toku_version}"
+       comment "#{node[:db_mysql][:tokudb][:version]}"
        uid 927
        gid "mysql"
        system true
        action :create
     end
 
-    execute "chown -Rf #{node[:db_mysql][:tokudb][:install_path]}/#{toku_version}" do
+    execute "chown -Rf #{node[:db_mysql][:tokudb][:install_path]}/#{node[:db_mysql][:tokudb][:version]}" do
         command "chown -Rf mysql.mysql #{node[:db_mysql][:tokudb][:install_path]}"
         only_if { ::File.exists?(node[:db_mysql][:tokudb][:install_path]) }
     end
 
      link "#{node[:db_mysql][:tokudb][:base_dir]}" do
-        to "#{node[:db_mysql][:tokudb][:install_path]}/#{toku_version}"
+        to "#{node[:db_mysql][:tokudb][:install_path]}/#{node[:db_mysql][:tokudb][:version]}"
      end
 
     group "mysql" do
