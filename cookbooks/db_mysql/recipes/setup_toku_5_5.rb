@@ -112,7 +112,7 @@ log "Set #{node[:db_mysql][:server_packages_install]}."
 
 log "MariaDB is installed with the server package.  Proceeding with TokuDB."
 
-     log "  Make sure to the original Tokutek filename is kept"
+     log "  Make sure the original Tokutek filename is kept"
 
      node[:db_mysql][:tokudb][:version]=File.basename(URI.parse(node[:db_mysql][:tokudb_url]).path).split('.tar.gz').first
 
