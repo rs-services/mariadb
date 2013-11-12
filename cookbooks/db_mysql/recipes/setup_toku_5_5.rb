@@ -13,6 +13,8 @@ node[:db][:version] = maria_version
 node[:db][:flavor] = "tokudb"
 node[:db][:provider] = "db_mysql"
 
+require 'uri'
+
 log "  Setting DB MySQL:#{node[:db][:flavor]} version to #{node[:db][:version]}"
 log "We setup MariaDB 5.5 first to get all MariaDB dependencies via yum."
 
@@ -106,13 +108,13 @@ log "Set #{node[:db_mysql][:server_packages_install]}."
 
 log "MariaDB is installed with the server package.  Proceeding with TokuDB."
 
-	#Try and clean up the url/file
-     node[:db_mysql][:tokudb][:version]=node[:db_mysql][:tokudb_url].split('/').last.split('.tar.gz').first.first.split('%2F').last
-     toku_package = node[:db_mysql][:tokudb_url]
+     log "  Make sure to the original Tokutek filename is kept"
+
+     node[:db_mysql][:tokudb][:version]=File.basename(uri.URI.parse(node[:db_mysql][:tokudb_url])).split('.tar.gz').first
      toku_version = node[:db_mysql][:tokudb][:version]
 
      remote_file "#{Chef::Config[:file_cache_path]}/tokudb.tar.gz" do
-         source "#{toku_package}"
+         source "#{node[:db_mysql][:tokudb_url]}"
          mode "0755"
          backup false
          action :create_if_missing
@@ -150,8 +152,9 @@ log "MariaDB is installed with the server package.  Proceeding with TokuDB."
        action :create
     end
 
-   remote_file "#{node[:db_mysql][:tokudb][:base_dir]}/scripts/mysql_convert_table_format" do
-      source "https://raw.github.com/azilber/mariadb/45f81eba12283e58717ab2b3de02b9e2054ee2ec/scripts/mysql_convert_table_format.sh"  
+   log " Use mysql_convert_table_format.pl for Innodb -> TokuDB conversions"
+   cookbook_file "#{node[:db_mysql][:tokudb][:base_dir]}/scripts/mysql_convert_table_format.pl" do
+      source "mysql_convert_table_format.sh"  
       mode "0755"
       backup false
       action :create_if_missing
